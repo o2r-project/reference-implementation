@@ -1,0 +1,24 @@
+[submodule "o2r-loader"]
+	path = o2r-loader
+	url = https://github.com/o2r-project/o2r-loader
+[submodule "o2r-bouncer"]
+	path = o2r-bouncer
+	url = https://github.com/o2r-project/o2r-bouncer
+[submodule "o2r-finder"]
+	path = o2r-finder
+	url = https://github.com/o2r-project/o2r-finder
+[submodule "o2r-informer"]
+	path = o2r-informer
+	url = https://github.com/o2r-project/o2r-informer
+[submodule "o2r-muncher"]
+	path = o2r-muncher
+	url = https://github.com/o2r-project/o2r-muncher
+[submodule "o2r-transporter"]
+	path = o2r-transporter
+	url = https://github.com/o2r-project/o2r-transporter
+[submodule "o2r-shipper"]
+	path = o2r-shipper
+	url = https://github.com/o2r-project/o2r-shipper
+[submodule "o2r-platform"]
+	path = o2r-platform
+	url = https://github.com/o2r-project/o2r-platform
