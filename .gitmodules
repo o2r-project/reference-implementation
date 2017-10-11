@@ -22,3 +22,18 @@
 [submodule "o2r-platform"]
 	path = o2r-platform
 	url = https://github.com/o2r-project/o2r-platform
+[submodule "o2r-web-api"]
+	path = o2r-web-api
+	url = https://github.com/o2r-project/o2r-web-api
+[submodule "erc-spec"]
+	path = erc-spec
+	url = https://github.com/o2r-project/erc-spec
+[submodule "erc-checker"]
+	path = erc-checker
+	url = https://github.com/o2r-project/erc-checker
+[submodule "o2r-meta"]
+	path = o2r-meta
+	url = https://github.com/o2r-project/o2r-meta
+[submodule "o2r-substituter"]
+	path = o2r-substituter
+	url = https://github.com/o2r-project/o2r-substituter
