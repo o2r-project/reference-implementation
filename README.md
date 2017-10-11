@@ -79,12 +79,6 @@ O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALL
 
 Wait a bit, then open **http://localhost**.
 
-### Set user levels after first login
-
-The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
-
-Configure adminMongo (see above), open the collection `users` in the database `muncher` and adjust the level property in the database document.
-
 ### Load data
 
 **TBD**
