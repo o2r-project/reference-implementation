@@ -46,22 +46,20 @@ These repositories also require an authentication token.
 
 - [Create access token](https://zenodo.org/login/?next=%2Faccount%2Fsettings%2Fapplications%2Ftokens%2Fnew%2F) for [Zenodo](https://zenodo.org/)
 
-#### Elasticsearch host preparation (optional)
+#### Elasticsearch host preparation
 
 The implementation uses an [Elasticsearch](http://elastic.co) document search engine.
 Elasticsearch requires the ability to create many memory-mapped areas ([mmaps](https://en.wikipedia.org/wiki/Mmap)s) for fast access.
 The usual "max map count" setting is [configured to low on many computers](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/_maximum_map_count_check.html).
+
 You may have to configure `vm.max_map_count` on the host to be at least `262144`, e.g. on Linux via `sysctl`.
 You can find instructions for all hosts (including Docker Toolbox) in the [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/docker.html#docker-cli-run-prod-mode).
-
-#### Note: Two step execution
-
-Both approaches detailed below rely on _2 `docker-compose` configurations_ to make sure the database containers are ready before starting the reproducibility service and platform.
 
 ### Build images from source and run
 
 ```bash
-make build_images run_local
+O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login O2R_ZENODO_TOKEN=<your token> \
+    make build_images run_local
 ```
 
 Wait for a while, then open **http://localhost**.
@@ -73,7 +71,7 @@ All o2r software projects have automatic builds [available on Docker Hub](https:
 The following command executes a `docker-compose` command to pull and run these images.
 
 ```bash
-O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login ZENODO_TOKEN=<your token> \
+O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login O2R_ZENODO_TOKEN=<your token> \
     make run_hub
 ```
 
@@ -83,17 +81,33 @@ Wait a bit, then open **http://localhost**.
 
 **TBD**
 
-### Inspect database
+- https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA
+- https://uni-muenster.sciebo.de/index.php/s/h5tNYXsS1Bsv4qr
+
+### Explore back-end
+
+#### Database administration
 
 An [adminMongo](https://adminmongo.markmoffat.com/) instance is included in the reference implementation. Open it at http://localhost:1234. In mongoAdmin please manually create a connection to host db, i.e. mongodb://db:27017 to edit the database (click "Update" first if you edit the existing connection, then "Connect").
 
 The docker compose configuration includes an adminMongo instance. Open it at http://localhost:1234, create a new connection with the following settings:
 
 - Connection name: any name
-- Connection string: `mongodb://db:27017` (which is the default port and the host `db`, no password)
+- Connection string: `mongodb://mongodb:27017` (which is the default port and the host `mongodb`, no password)
 - Connection options: `{}` (empty/default)
 
 Click on "Add connection", then on "Connections" at the top right corner, and then "Connect" using the just created connection.
+
+#### File storage
+
+The configurations all use a common [Docker volume](https://docs.docker.com/engine/admin/volumes/volumes/) `o2rvol` with the global name `referenceimplementation_o2rvol`.
+
+The volume and network can be inspected for development purposes:
+
+```bash
+docker volume ls
+docker volume inspect reference-implementation_o2r_test_storage
+```
 
 ## Reproducibility
 
@@ -112,16 +126,15 @@ This repository imports all relevant software projects as [git submodules](https
 
 ### Known limitations
 
-Nested code projects are currently installed from GitHub during the building of Docker images ((see also [#1]()).
-
-- `o2r-muncher`'s Docker image contains `o2r-meta` and `erc-checker`
-- `o2r-loaders`'s Docker image contains `o2r-meta`
-
-The used Docker base images and dependencies for the services, such as npm or pip packages, must be available online in the required version to build the images locally.
+- Nested code projects are currently installed from GitHub during the building of Docker images ((see also [#1]()).
+  - `o2r-muncher`'s Docker image contains `o2r-meta` and `erc-checker`
+  - `o2r-loaders`'s Docker image contains `o2r-meta`
+- The used Docker base images and dependencies for the services, such as npm or pip packages, must be available online in the required version to build the images locally. See project files such as `package.json` or `requirements.txt` for a full list of dependencies.
 
 ### Create package
 
-...
+**TODO**
+
 
 ```bash
 make show_microservices_versions >> dist/versions.txt
@@ -129,7 +142,7 @@ make show_microservices_versions >> dist/versions.txt
 
 ### Archival to Zenodo
 
-...
+**TODO**
 
 
 ## License
