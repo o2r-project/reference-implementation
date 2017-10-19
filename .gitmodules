@@ -37,3 +37,6 @@
 [submodule "o2r-substituter"]
 	path = o2r-substituter
 	url = https://github.com/o2r-project/o2r-substituter
+[submodule "architecture"]
+	path = architecture
+	url = https://github.com/o2r-project/architecture
