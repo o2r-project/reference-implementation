@@ -1,0 +1,163 @@
+# (C) Copyright 2017 o2r project. https://o2r.info
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+---
+version: '3'
+
+volumes:
+  o2rvol: {}
+
+services:
+  mongodb:
+    image: mongo:3.4
+    ports:
+      - "27017:27017"
+    command: "--replSet rso2r"
+
+  mongodbconfig:
+    image: mongo:3.4
+    depends_on:
+      - mongodb
+    command: bash -c "sleep 5; mongo --verbose --host mongodb --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
+
+  mongoadmin:
+    image: adicom/admin-mongo:latest
+    environment:
+      - DB_HOST=mongodb
+      - CONN_NAME=Local 
+    ports:
+      - "1234:1234"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  muncher:
+    image: muncher
+    restart: unless-stopped
+    volumes:
+      - o2rvol:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "MUNCHER_MONGODB=mongodb://mongodb"
+      - MUNCHER_PORT=8080
+      - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+    ports:
+      - "8080:8080"
+
+  loader:
+    image: loader
+    restart: unless-stopped
+    volumes:
+      - o2rvol:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "LOADER_MONGODB=mongodb://mongodb"
+      - LOADER_PORT=8088
+      - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+    ports:
+      - "8088:8088"
+
+  informer:
+    image: informer
+    restart: unless-stopped
+    environment:
+      - "INFORMER_MONGODB=mongodb://mongodb"
+      - INFORMER_MONGODB_HOST=mongodb
+      - INFORMER_PORT=8082
+      - DEBUG=informer
+    ports:
+      - "8082:8082"
+
+  bouncer:
+    image: bouncer
+    restart: unless-stopped
+    environment:
+      - "BOUNCER_MONGODB=mongodb://mongodb"
+      - BOUNCER_PORT=8083
+      - DEBUG=bouncer
+      - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+    ports:
+      - "8083:8083"
+
+  finder:
+    image: finder
+    restart: unless-stopped
+    volumes:
+      - o2rvol:/tmp/o2r
+    environment:
+      - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
+      - FINDER_PORT=8084
+      - DEBUG=finder
+      - ELASTIC_SEARCH_URL=elasticsearch:9200
+      - "MONGO_DATA_URL=mongodb://mongodb/muncher"
+      - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
+      - BATCH_COUNT=20
+    ports:
+      - "8084:8084"
+
+  transporter:
+    image: transporter
+    restart: unless-stopped
+    volumes:
+      - o2rvol:/tmp/o2r
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - "TRANSPORTER_MONGODB=mongodb://mongodb"
+      - TRANSPORTER_PORT=8081
+      - DEBUG=transporter,transporter:*
+    ports:
+      - "8081:8081"
+
+  shipper:
+    image: shipper
+    restart: unless-stopped
+    volumes:
+      - o2rvol:/tmp/o2r
+    environment:
+      - "SHIPPER_MONGODB=mongodb://mongodb:27017/"
+      - SHIPPER_REPO_ZENODO_TOKEN=${ZENODO_TOKEN}
+      - SHIPPER_BOTTLE_HOST=0.0.0.0
+      - "SHIPPER_BASE_PATH=/tmp/o2r"
+    ports:
+      - "8087:8087"
+
+  platform:
+    image: platform
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+
+  webserver:
+    image: nginx:latest
+    restart: unless-stopped
+    depends_on:
+      - muncher
+      - bouncer
+      - transporter
+      - platform
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+    ports:
+      - "80:80"
+

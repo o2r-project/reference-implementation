@@ -11,8 +11,7 @@ $env:OAUTH_CLIENT_ID = <...>
 $env:OAUTH_CLIENT_SECRET = <...>
 $env:OAUTH_URL_CALLBACK = <...>
 $env:ZENODO_TOKEN = <...>
-docker-compose --file test/docker-compose-db.yml up -d
-docker-compose --file test/docker-compose-remote.yml up
+docker-compose up
 ```
 
 The services are available at `http://localhost`.
@@ -26,8 +25,7 @@ When using Compose with Docker Toolbox/Machine on Windows, [volume paths are no 
 Also, the client's defaults (i.e. using `localhost`) does not work. We must mount a config file to point the API to the correct location, see `win/config-toolbox.js`, and use the prepared configuration file `win/docker-compose-toolbox.yml`.
 
 ```bash
-docker-compose --file test/docker-compose-db.yml up -d
-COMPOSE_CONVERT_WINDOWS_PATHS=1 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose --file test/docker-compose.yml up
+COMPOSE_CONVERT_WINDOWS_PATHS=1 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
 ```
 
 The services are available at `http://<machine-ip>`.
