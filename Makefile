@@ -1,6 +1,9 @@
 init:
 	git clone https://github.com/o2r-project/reference-implementation
 	cd reference-implementation
+	git submodule add https://github.com/o2r-project/architecture
+	git submodule add https://github.com/o2r-project/erc-spec
+	git submodule add https://github.com/o2r-project/erc-checker
 	git submodule add https://github.com/o2r-project/o2r-bouncer
 	git submodule add https://github.com/o2r-project/o2r-finder
 	git submodule add https://github.com/o2r-project/o2r-informer
@@ -12,23 +15,21 @@ init:
 	git submodule add https://github.com/o2r-project/o2r-substituter
 	git submodule add https://github.com/o2r-project/o2r-transporter
 	git submodule add https://github.com/o2r-project/o2r-web-api
-	git submodule add https://github.com/o2r-project/erc-spec
-	git submodule add https://github.com/o2r-project/erc-checker
 
 update:
 	git submodule update --init --recursive
 	git submodule foreach git pull origin master
 
 build_images:
-	cd o2r-bouncer; 	docker build 	--tag bouncer 		--no-cache .; cd ..;
-	cd o2r-finder; 		docker build 	--tag finder 		-f Dockerfile.local --no-cache .; cd ..;
-	cd o2r-informer; 	docker build 	--tag informer 		--no-cache .; cd ..;
-	cd o2r-loader; 		docker build 	--tag loader 		-f Dockerfile --no-cache .; cd ..;
-	cd o2r-muncher; 	docker build 	--tag muncher 		-f Dockerfile --no-cache .; cd ..;
-	cd o2r-platform; 	docker build 	--tag platform 		-f Dockerfile --no-cache .;  cd ..;
-	cd o2r-shipper; 	docker build 	--tag shipper 		-f Dockerfile.local --no-cache .; cd ..;
-	cd o2r-substituter; docker build 	--tag substituter 	-f Dockerfile --no-cache .;  cd ..;
-	cd o2r-transporter; docker build 	--tag transporter 	-f Dockerfile --no-cache .;  cd ..;
+	cd o2r-bouncer; 	docker build --tag o2r_refimpl_bouncer 		.; cd ..;
+	cd o2r-finder; 		docker build --tag o2r_refimpl_finder 		.; cd ..;
+	cd o2r-informer; 	docker build --tag o2r_refimpl_informer 	.; cd ..;
+	cd o2r-loader; 		docker build --tag o2r_refimpl_loader 		.; cd ..;
+	cd o2r-muncher; 	docker build --tag o2r_refimpl_muncher 		.; cd ..;
+	cd o2r-platform; 	docker build --tag o2r_refimpl_platform 	.; cd ..;
+	cd o2r-shipper; 	docker build --tag o2r_refimpl_shipper 		.; cd ..;
+	cd o2r-substituter; docker build --tag o2r_refimpl_substituter 	.; cd ..;
+	cd o2r-transporter; docker build --tag o2r_refimpl_transporter 	.; cd ..;
 
 run_local:
 	OAUTH_CLIENT_ID=$O2R_ORCID_ID OAUTH_CLIENT_SECRET=$O2R_ORCID_SECRET OAUTH_URL_CALLBACK=$O2R_ORCID_CALLBACK ZENODO_TOKEN=$O2R_ZENODO_TOKEN docker-compose up --file docker-compose-local.yml;
@@ -36,6 +37,17 @@ run_local:
 stop_local:
 	docker-compose --file docker-compose-db.yml down;
 	docker-compose down;
+
+show_versions_local:
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bouncer 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_finder 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_informer 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_loader 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_muncher 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_platform 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.vcs-ref"}}' o2r_refimpl_shipper 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_substituter ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_transporter ;
 
 run_hub: pull_hub_images run_hub_images
 
@@ -53,7 +65,7 @@ pull_hub_images:
 run_hub_images:
 	OAUTH_CLIENT_ID=$(value O2R_ORCID_ID) OAUTH_CLIENT_SECRET=$(value O2R_ORCID_SECRET) OAUTH_URL_CALLBACK=$(value O2R_ORCID_CALLBACK) ZENODO_TOKEN=$(value O2R_ZENODO_TOKEN) docker-compose up;
 
-show_microservices_versions:
+show_versions_hub:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	   o2rproject/o2r-bouncer;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	    o2rproject/o2r-finder;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-informer;
