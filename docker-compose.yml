@@ -135,10 +135,10 @@ services:
     volumes:
       - o2rvol:/tmp/o2r
     environment:
-      - "SHIPPER_MONGODB=mongodb://mongodb:27017/"
-      - SHIPPER_REPO_ZENODO_TOKEN=${ZENODO_TOKEN}
-      - SHIPPER_BOTTLE_HOST=0.0.0.0
-      - "SHIPPER_BASE_PATH=/tmp/o2r"
+      SHIPPER_MONGODB: "mongodb://mongodb"
+      SHIPPER_REPO_TOKENS: '{"zenodo_sandbox": "${ZENODO_TOKEN}", "download": "" }'
+      SHIPPER_BOTTLE_HOST: "0.0.0.0"
+      SHIPPER_BASE_PATH: "/tmp/o2r"
     ports:
       - "8087:8087"
 
