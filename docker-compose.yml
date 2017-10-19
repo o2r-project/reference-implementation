@@ -139,8 +139,18 @@ services:
       SHIPPER_REPO_TOKENS: '{"zenodo_sandbox": "${ZENODO_TOKEN}", "download": "" }'
       SHIPPER_BOTTLE_HOST: "0.0.0.0"
       SHIPPER_BASE_PATH: "/tmp/o2r"
-    ports:
-      - "8087:8087"
+
+  substituter:
+    image: o2rproject/o2r-substituter:latest
+    restart: unless-stopped
+    depends_on:
+      - mongodbconfig
+    volumes:
+      - o2rstorage:/tmp/o2r
+    environment:
+      - "SUBSTITUTER_MONGODB=mongodb://mongodb"
+      - SUBSTITUTER_PORT=8090
+      - DEBUG=substituter,substituter:*
 
   platform:
     image: o2rproject/o2r-platform:latest
