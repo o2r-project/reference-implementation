@@ -1,5 +1,10 @@
 # o2r reference implementation on Windows
 
+This document contains Windows-specific configuration and steps.
+
+**Please carefully read the sections "Basics" and "Prerequisites" in the file `README.md` for general information.
+In the sections "Build images from source and run" and "Build images from source and run", please be aware of the general remarks but use the commands from this file instead.
+
 ## Windows with Docker for Windows
 
 [Docker for Windows](https://docs.docker.com/docker-for-windows/) is available for 64bit Windows 10 Pro, Enterprise and Education (with Hyper-V available) and on Windows Server 2016 (see [Docker Docs](https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install)).

@@ -6,12 +6,40 @@ A catch-all repository to run all [o2r](http://o2r.info) microservices and the u
 
 ### Basics
 
-The o2r reference implementation realises a workflow for publishing reproducible articles using the [Executable Research Compendium](https://github.com/o2r-project/erc-spec) (ERC) and has two broad components: a user interface for demonstrating novel interactions with ERC, a.k.a. the "platform" and a server-side collection of microservices implementing the [o2r Web API](https://github.com/o2r-project/o2r-web-api), a.k.a. the "reproducibility service".
+The o2r reference implementation realises a workflow for publishing reproducible articles using the [Executable Research Compendium](https://github.com/o2r-project/erc-spec) (ERC) and has two broad components: a user interface for demonstrating novel interactions with ERC, a.k.a. the "platform", and a side collection of microservices implementing the [o2r Web API](https://github.com/o2r-project/o2r-web-api), a.k.a. the "reproducibility service".
 
 For more information on the architecture and the microservices see [o2r Software Architecture](https://github.com/o2r-project/architecture).
 
-The commands in this file assume a Linux shell.
-See the file `README-WIN.md` for running the reference implementation using Windows and/or Docker Toolbox.
+### Contents
+
+All of the mentioned documentation and software is available in this project.
+The documentation is also available online for reading, though availability may change.
+
+| Component | directory | online |
+| ------ | ------ | ------ |
+| ERC specification (document) | `erc-spec` | http://o2r.info/erc-spec/ |
+| Web API specification (document) | `o2r-web-api` | https://github.com/o2r-project/o2r-web-api |
+| Architecture specification (document) | `architecture` | https://github.com/o2r-project/architecture |
+| ERC checker (library/tool) | `erc-checker` | https://github.com/o2r-project/erc-checker/ |
+| bouncer (microservice) | `o2r-bouncer` | https://github.com/o2r-project/o2r-bouncer |
+| finder (microservice) | `o2r-finder` | https://github.com/o2r-project/o2r-finder |
+| informer (microservice) | `o2r-informer` | https://github.com/o2r-project/o2r-informer |
+| loader (microservice) | `o2r-loader` | https://github.com/o2r-project/o2r-loader |
+| meta (CLI tool) | `o2r-meta` | https://github.com/o2r-project/o2r-meta|
+| muncher (microservice) | `o2r-muncher` | https://github.com/o2r-project/o2r-muncher |
+| platform (web UI) | `o2r-platform` | https://github.com/o2r-project/o2r-platform|
+| shipper (microservice) | `o2r-shipper` | https://github.com/o2r-project/o2r-shipper |
+| substituter (microservice) | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
+| transporter (microservice) | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
+
+### How to... across operating systems
+
+This project contains configurations and scripts to make running the o2r reference implementation as easy as possible.
+
+The commands in _this file_ (`README.md`) assume a Linux shell and tools available under Linux.
+See the file `README-WIN.md` for Windows-specific instructions on running the reference implementation using Windows and/or Docker Toolbox.
+
+**All information relevant to _both_ operating systems are only in this file.**
 
 ### Prerequisites
 
