@@ -41,6 +41,8 @@ See the file `README-WIN.md` for Windows-specific instructions on running the re
 
 **All information relevant to _both_ operating systems are only in this file.**
 
+If you are familiar with virtual machines (VMs) we strongly consider you run the reference implementation in a Linux VM with the latest available Docker.
+
 ### Prerequisites
 
 #### Get files

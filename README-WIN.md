@@ -4,6 +4,7 @@ This document contains Windows-specific configuration and steps.
 
 **Please carefully read the sections "Basics" and "Prerequisites" in the file `README.md` for general information.
 In the sections "Build images from source and run" and "Build images from source and run", please be aware of the general remarks but use the commands from this file instead.
+Take a look at the "Troubleshooting" sections in this file if you run into problems.
 
 ## Windows with Docker for Windows
 
@@ -12,14 +13,23 @@ In the sections "Build images from source and run" and "Build images from source
 The environmental variables must be passed separately on Windows, followed by the docker-compose commands:
 
 ```powershell
-$env:OAUTH_CLIENT_ID = <...>
-$env:OAUTH_CLIENT_SECRET = <...>
-$env:OAUTH_URL_CALLBACK = <...>
-$env:ZENODO_TOKEN = <...>
-docker-compose up
+$env:OAUTH_CLIENT_ID = "<... required ...>"
+$env:OAUTH_CLIENT_SECRET = "<... required ...>"
+$env:OAUTH_URL_CALLBACK = "http://localhost/api/v1/auth/login"
+$env:ZENODO_TOKEN = "<... optional ...>"
+docker-compose.exe up
 ```
 
 The services are available at `http://localhost`.
+
+### Troubleshooting
+
+- Make sure that the drive where you cloned this repository to is shared (Docker > Shared Drives), because a configuration file (`nginx.conf`) must be mounted into the service `webserver`.
+- Reconsider using a Linux virtual machine.
+- Install the latest _edge_ channel of Docker, see https://docs.docker.com/docker-for-windows/faqs/#questions-about-stable-and-edge-channels
+- Make sure that mounting files into containers works. This thread contains many potentially useful hints and ideas: https://forums.docker.com/t/volume-mounts-in-windows-does-not-work/10693/4
+- Inspect your environment variables in PowerShell with `Get-ChildItem Env:`
+
 
 ##  Windows with Docker Toolbox
 
