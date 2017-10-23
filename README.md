@@ -21,6 +21,7 @@ The documentation is also available online for reading, though availability may 
 | Web API specification (document) | `o2r-web-api` | https://github.com/o2r-project/o2r-web-api |
 | Architecture specification (document) | `architecture` | https://github.com/o2r-project/architecture |
 | ERC checker (library/tool) | `erc-checker` | https://github.com/o2r-project/erc-checker/ |
+| ERC and workspace examples (misc) | `erc-examples` | https://github.com/o2r-project/erc-examples |
 | bouncer (microservice) | `o2r-bouncer` | https://github.com/o2r-project/o2r-bouncer |
 | finder (microservice) | `o2r-finder` | https://github.com/o2r-project/o2r-finder |
 | informer (microservice) | `o2r-informer` | https://github.com/o2r-project/o2r-informer |
@@ -32,11 +33,11 @@ The documentation is also available online for reading, though availability may 
 | substituter (microservice) | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
 | transporter (microservice) | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
 
-### How to... across operating systems
+### Supported operating systems
 
 This project contains configurations and scripts to make running the o2r reference implementation as easy as possible.
 
-The commands in _this file_ (`README.md`) assume a Linux shell and tools available under Linux.
+The commands in _this file_ (`README.md`) assume a shell and tools available under Unix, so they work on a recent installation of Linux or MacOS X.
 See the file `README-WIN.md` for Windows-specific instructions on running the reference implementation using Windows and/or Docker Toolbox.
 
 **All information relevant to _both_ operating systems are only in this file.**
@@ -113,10 +114,11 @@ Wait a bit, then open **http://localhost**.
 
 ### Load data
 
-**TBD**
+The o2r API supports two way to load scientific workflows: direct upload as a ZIP archive, or import from a publish share.
 
-- https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA
-- https://uni-muenster.sciebo.de/index.php/s/h5tNYXsS1Bsv4qr
+Ready to use **Direct upload** examples are available in the directory `erc-examples`.
+
+Examples for loading from a public share are available here: https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA (see file `README.txt`).
 
 ### Explore back-end
 
