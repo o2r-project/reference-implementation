@@ -32,7 +32,7 @@ build_images:
 	cd o2r-transporter; docker build --tag o2r_refimpl_transporter 	.; cd ..;
 
 run_local:
-	OAUTH_CLIENT_ID=$O2R_ORCID_ID OAUTH_CLIENT_SECRET=$O2R_ORCID_SECRET OAUTH_URL_CALLBACK=$O2R_ORCID_CALLBACK ZENODO_TOKEN=$O2R_ZENODO_TOKEN docker-compose up --file docker-compose-local.yml;
+	OAUTH_CLIENT_ID=$(value O2R_ORCID_ID) OAUTH_CLIENT_SECRET=$(value O2R_ORCID_SECRET) OAUTH_URL_CALLBACK=$(value O2R_ORCID_CALLBACK) ZENODO_TOKEN=$(value O2R_ZENODO_TOKEN) docker-compose --file docker-compose-local.yml up;
 
 stop_local:
 	docker-compose --file docker-compose-db.yml down;

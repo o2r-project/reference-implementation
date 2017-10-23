@@ -36,6 +36,9 @@ The documentation is also available online for reading, though availability may 
 
 This project contains configurations and scripts to make running the o2r reference implementation as easy as possible.
 
+The project uses [`make`](https://www.gnu.org/software/make/), which helps simplifying the execution of the various steps necessary to run your own o2r-platform into a simple set of commands. 
+These commands are formulated in the `Makefile` included in this project.
+
 The commands in _this file_ (`README.md`) assume a Linux shell and tools available under Linux.
 See the file `README-WIN.md` for Windows-specific instructions on running the reference implementation using Windows and/or Docker Toolbox.
 
@@ -48,7 +51,7 @@ If you are familiar with virtual machines (VMs) we strongly consider you run the
 #### Software
 
 The o2r reference implementation is build on [Docker](http://docker.com/).
-You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Community Edition) and [docker-compose](https://docs.docker.com/compose/) first to continue.
+You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Community Edition) and [docker-compose](https://docs.docker.com/compose/) (`v 1.13.0+`) first to continue.
 
 The tasks below are automated using [Make](https://en.wikipedia.org/wiki/Make_(software)).
 Make sure that you have GNU Make (tested) or one of the derivatives (not tested) running on your system.
@@ -86,6 +89,15 @@ You may have to configure `vm.max_map_count` on the host to be at least `262144`
 You can find instructions for all hosts (including Docker Toolbox) in the [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/docker.html#docker-cli-run-prod-mode).
 
 ### Build images from source and run
+
+This repository already includes a `.gitmodules` file, which lists all required o2r microservices as git submodules. 
+To download all o2r source code at once, navigate to the `reference-implementation` base directory and use
+
+```bash
+    make update
+```
+
+Once all repositories have been pulled successfully, build docker images of the microservices and run them in containers by executing:
 
 ```bash
 O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login O2R_ZENODO_TOKEN=<your token> \
