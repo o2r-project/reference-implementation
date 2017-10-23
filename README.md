@@ -46,10 +46,6 @@ If you are familiar with virtual machines (VMs) we strongly consider you run the
 
 ### Prerequisites
 
-#### Get files
-
-You can download this repository using git with `git clone https://github.com/o2r-project/reference-implementation.git` or download an archive [here](https://github.com/o2r-project/reference-implementation/archive/master.zip). 
-
 #### Software
 
 The o2r reference implementation is build on [Docker](http://docker.com/).
@@ -58,6 +54,13 @@ You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Commun
 The tasks below are automated using [Make](https://en.wikipedia.org/wiki/Make_(software)).
 Make sure that you have GNU Make (tested) or one of the derivatives (not tested) running on your system.
 If Make is not available you can manually execute the required commands from the respective rule in the file `Makefile`.
+
+#### Get files
+
+You can download this repository using git with `git clone https://github.com/o2r-project/reference-implementation.git` or download an archive [here](https://github.com/o2r-project/reference-implementation/archive/master.zip).
+
+All relevant software projects are included in this repository via [git submodules](https://git-scm.com/docs/git-submodule).
+Run `make update` or the respective commands on your operating system to initialize and clone submodules before proceeding.
 
 #### Accounts and tokens
 
