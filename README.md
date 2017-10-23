@@ -43,6 +43,10 @@ See the file `README-WIN.md` for Windows-specific instructions on running the re
 
 ### Prerequisites
 
+#### Get files
+
+You can download this repository using git with `git clone https://github.com/o2r-project/reference-implementation.git` or download an archive [here](https://github.com/o2r-project/reference-implementation/archive/master.zip). 
+
 #### Software
 
 The o2r reference implementation is build on [Docker](http://docker.com/).
