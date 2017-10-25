@@ -40,3 +40,6 @@
 [submodule "architecture"]
 	path = architecture
 	url = https://github.com/o2r-project/architecture
+[submodule "erc-examples"]
+	path = erc-examples
+	url = https://github.com/o2r-project/erc-examples

@@ -21,6 +21,7 @@ The documentation is also available online for reading, though availability may 
 | Web API specification (document) | `o2r-web-api` | https://github.com/o2r-project/o2r-web-api |
 | Architecture specification (document) | `architecture` | https://github.com/o2r-project/architecture |
 | ERC checker (library/tool) | `erc-checker` | https://github.com/o2r-project/erc-checker/ |
+| ERC and workspace examples (misc) | `erc-examples` | https://github.com/o2r-project/erc-examples |
 | bouncer (microservice) | `o2r-bouncer` | https://github.com/o2r-project/o2r-bouncer |
 | finder (microservice) | `o2r-finder` | https://github.com/o2r-project/o2r-finder |
 | informer (microservice) | `o2r-informer` | https://github.com/o2r-project/o2r-informer |
@@ -32,7 +33,7 @@ The documentation is also available online for reading, though availability may 
 | substituter (microservice) | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
 | transporter (microservice) | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
 
-### How to... across operating systems
+### Supported operating systems
 
 This project contains configurations and scripts to make running the o2r reference implementation as easy as possible.
 
@@ -40,6 +41,7 @@ The project uses [`make`](https://www.gnu.org/software/make/), which helps simpl
 These commands are formulated in the `Makefile` included in this project.
 
 The commands in _this file_ (`README.md`) assume a Linux shell and tools available under Linux.
+
 See the file `README-WIN.md` for Windows-specific instructions on running the reference implementation using Windows and/or Docker Toolbox.
 
 **All information relevant to _both_ operating systems are only in this file.**
@@ -56,6 +58,13 @@ You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Commun
 The tasks below are automated using [Make](https://en.wikipedia.org/wiki/Make_(software)).
 Make sure that you have GNU Make (tested) or one of the derivatives (not tested) running on your system.
 If Make is not available you can manually execute the required commands from the respective rule in the file `Makefile`.
+
+#### Get files
+
+You can download this repository using git with `git clone https://github.com/o2r-project/reference-implementation.git` or download an archive [here](https://github.com/o2r-project/reference-implementation/archive/master.zip).
+
+All relevant software projects are included in this repository via [git submodules](https://git-scm.com/docs/git-submodule).
+Run `make update` or the respective commands on your operating system to initialize and clone submodules before proceeding.
 
 #### Accounts and tokens
 
@@ -121,10 +130,11 @@ Wait a bit, then open **http://localhost**.
 
 ### Load data
 
-**TBD**
+The o2r API supports two way to load scientific workflows: direct upload as a ZIP archive, or import from a publish share.
 
-- https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA
-- https://uni-muenster.sciebo.de/index.php/s/h5tNYXsS1Bsv4qr
+Ready to use **Direct upload** examples are available in the directory `erc-examples`.
+
+Examples for loading from a public share are available here: https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA (see file `README.txt`).
 
 ### Explore back-end
 

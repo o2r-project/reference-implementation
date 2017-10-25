@@ -4,6 +4,7 @@ init:
 	git submodule add https://github.com/o2r-project/architecture
 	git submodule add https://github.com/o2r-project/erc-spec
 	git submodule add https://github.com/o2r-project/erc-checker
+	git submodule add https://github.com/o2r-project/erc-examples
 	git submodule add https://github.com/o2r-project/o2r-bouncer
 	git submodule add https://github.com/o2r-project/o2r-finder
 	git submodule add https://github.com/o2r-project/o2r-informer
