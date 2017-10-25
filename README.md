@@ -40,7 +40,7 @@ This project contains configurations and scripts to make running the o2r referen
 The project uses [`make`](https://www.gnu.org/software/make/), which helps simplifying the execution of the various steps necessary to run your own o2r-platform into a simple set of commands. 
 These commands are formulated in the `Makefile` included in this project.
 
-The commands in _this file_ (`README.md`) assume a Linux shell and tools available under Linux.
+The commands in _this file_ (`README.md`) assume a Unix shell and related common tools, so they work on a recent installation of Linux or MacOS X.
 
 See the file `README-WIN.md` for Windows-specific instructions on running the reference implementation using Windows and/or Docker Toolbox.
 
