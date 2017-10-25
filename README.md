@@ -53,7 +53,7 @@ If you are familiar with virtual machines (VMs) we strongly consider you run the
 #### Software
 
 The o2r reference implementation is build on [Docker](http://docker.com/).
-You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Community Edition) and [docker-compose](https://docs.docker.com/compose/) (`v 1.13.0+`) first to continue.
+You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Community Edition, _edge_ channel, tested with version `17.09.0-ce` but later version should work) and [docker-compose](https://docs.docker.com/compose/) (version `1.13.0` or higher) first to continue.
 
 The tasks below are automated using [Make](https://en.wikipedia.org/wiki/Make_(software)).
 Make sure that you have GNU Make (tested) or one of the derivatives (not tested) running on your system.
