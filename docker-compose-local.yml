@@ -47,7 +47,7 @@ services:
       - "xpack.security.enabled=false"
 
   muncher:
-    image: muncher
+    image: o2r_refimpl_muncher
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -60,7 +60,7 @@ services:
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
 
   loader:
-    image: loader
+    image: o2r_refimpl_loader
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -73,7 +73,7 @@ services:
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
 
   informer:
-    image: informer
+    image: o2r_refimpl_informer
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -84,7 +84,7 @@ services:
       - DEBUG=informer
 
   bouncer:
-    image: bouncer
+    image: o2r_refimpl_bouncer
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -99,7 +99,7 @@ services:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: finder
+    image: o2r_refimpl_finder
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -116,7 +116,7 @@ services:
       - BATCH_COUNT=20
 
   transporter:
-    image: transporter
+    image: o2r_refimpl_transporter
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -129,7 +129,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: shipper
+    image: o2r_refimpl_shipper
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -142,7 +142,7 @@ services:
       SHIPPER_BASE_PATH: "/tmp/o2r"
 
   substituter:
-    image: substituter
+    image: o2r_refimpl_substituter
     restart: unless-stopped
     depends_on:
       - mongodbconfig
@@ -154,7 +154,7 @@ services:
       - DEBUG=substituter,substituter:*
 
   platform:
-    image: platform
+    image: o2r_refimpl_platform
     restart: unless-stopped
 
   webserver:
