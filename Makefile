@@ -36,8 +36,7 @@ run_local:
 	OAUTH_CLIENT_ID=$(value O2R_ORCID_ID) OAUTH_CLIENT_SECRET=$(value O2R_ORCID_SECRET) OAUTH_URL_CALLBACK=$(value O2R_ORCID_CALLBACK) ZENODO_TOKEN=$(value O2R_ZENODO_TOKEN) docker-compose --file docker-compose-local.yml up;
 
 stop_local:
-	docker-compose --file docker-compose-db.yml down;
-	docker-compose down;
+	docker-compose --file docker-compose-local.yml down;
 
 show_versions_local:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bouncer 	 ;
@@ -51,6 +50,9 @@ show_versions_local:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_transporter ;
 
 run_hub: pull_hub_images run_hub_images
+
+stop_hub:
+	docker-compose down;
 
 pull_hub_images:
 	docker pull o2rproject/o2r-bouncer;
