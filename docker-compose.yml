@@ -24,7 +24,7 @@ services:
     image: mongo:3.4
     command: "--replSet rso2r"
 
-  mongodbconfig:
+  configmongodb:
     image: mongo:3.4
     depends_on:
       - mongodb
@@ -47,10 +47,10 @@ services:
       - "xpack.security.enabled=false"
 
   muncher:
-    image: o2rproject/o2r-muncher:latest
+    image: o2rproject/o2r-muncher:0.12.3
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
@@ -60,10 +60,10 @@ services:
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
 
   loader:
-    image: o2rproject/o2r-loader:latest
+    image: o2rproject/o2r-loader:0.7.3
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
@@ -73,10 +73,10 @@ services:
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
 
   informer:
-    image: o2rproject/o2r-informer:latest
+    image: o2rproject/o2r-informer:0.3.0
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     environment:
       - "INFORMER_MONGODB=mongodb://mongodb"
       - INFORMER_MONGODB_HOST=mongodb
@@ -84,10 +84,10 @@ services:
       - DEBUG=informer
 
   bouncer:
-    image: o2rproject/o2r-bouncer:latest
+    image: o2rproject/o2r-bouncer:0.8.0
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     environment:
       - "BOUNCER_MONGODB=mongodb://mongodb"
       - BOUNCER_PORT=8083
@@ -99,10 +99,10 @@ services:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: o2rproject/o2r-finder:latest
+    image: o2rproject/o2r-finder:0.3.2
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
       - elasticsearch
     volumes:
       - o2rvol:/tmp/o2r
@@ -116,10 +116,10 @@ services:
       - BATCH_COUNT=20
 
   transporter:
-    image: o2rproject/o2r-transporter:latest
+    image: o2rproject/o2r-transporter:0.4.0
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -129,10 +129,10 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:latest
+    image: o2rproject/o2r-shipper:e3a837c
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
     environment:
@@ -142,10 +142,10 @@ services:
       SHIPPER_BASE_PATH: "/tmp/o2r"
 
   substituter:
-    image: o2rproject/o2r-substituter:latest
+    image: o2rproject/o2r-substituter:0.3.0
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
     environment:
@@ -154,7 +154,7 @@ services:
       - DEBUG=substituter,substituter:*
 
   platform:
-    image: o2rproject/o2r-platform:latest
+    image: o2rproject/o2r-platform:0.9.3
     restart: unless-stopped
 
   webserver:

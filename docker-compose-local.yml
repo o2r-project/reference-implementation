@@ -24,7 +24,7 @@ services:
     image: mongo:3.4
     command: "--replSet rso2r"
 
-  mongodbconfig:
+  configmongodb:
     image: mongo:3.4
     depends_on:
       - mongodb
@@ -50,7 +50,7 @@ services:
     image: o2r_refimpl_muncher
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
@@ -63,7 +63,7 @@ services:
     image: o2r_refimpl_loader
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
@@ -76,7 +76,7 @@ services:
     image: o2r_refimpl_informer
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     environment:
       - "INFORMER_MONGODB=mongodb://mongodb"
       - INFORMER_MONGODB_HOST=mongodb
@@ -87,7 +87,7 @@ services:
     image: o2r_refimpl_bouncer
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     environment:
       - "BOUNCER_MONGODB=mongodb://mongodb"
       - BOUNCER_PORT=8083
@@ -102,7 +102,7 @@ services:
     image: o2r_refimpl_finder
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
       - elasticsearch
     volumes:
       - o2rvol:/tmp/o2r
@@ -119,7 +119,7 @@ services:
     image: o2r_refimpl_transporter
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -132,7 +132,7 @@ services:
     image: o2r_refimpl_shipper
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
     environment:
@@ -145,7 +145,7 @@ services:
     image: o2r_refimpl_substituter
     restart: unless-stopped
     depends_on:
-      - mongodbconfig
+      - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
     environment:
