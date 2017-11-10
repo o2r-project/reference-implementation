@@ -12,12 +12,12 @@ Take a look at the "Troubleshooting" sections in this file if you run into probl
 
 The environmental variables must be passed separately on Windows, followed by the docker-compose commands:
 
-```powershell
-$env:OAUTH_CLIENT_ID = "<... required ...>"
-$env:OAUTH_CLIENT_SECRET = "<... required ...>"
-$env:OAUTH_URL_CALLBACK = "http://localhost/api/v1/auth/login"
-$env:ZENODO_TOKEN = "<... optional ...>"
-docker-compose.exe up
+```shell
+setx OAUTH_CLIENT_ID = "<... required ...>"
+setx OAUTH_CLIENT_SECRET = "<... required ...>"
+setx OAUTH_URL_CALLBACK = "http://localhost/api/v1/auth/login"
+setx ZENODO_TOKEN = "<... optional ...>"
+docker-compose up
 ```
 
 The services are available at `http://localhost`.
@@ -28,8 +28,9 @@ The services are available at `http://localhost`.
 - Reconsider using a Linux virtual machine.
 - Install the latest _edge_ channel of Docker, see https://docs.docker.com/docker-for-windows/faqs/#questions-about-stable-and-edge-channels
 - Make sure that mounting files into containers works. This thread contains many potentially useful hints and ideas: https://forums.docker.com/t/volume-mounts-in-windows-does-not-work/10693/4
+- If you want to set environment variables in PowerShell, use this syntax `$env:VARIABLENAME = "VARIABLEVALUE"`
 - Inspect your environment variables in PowerShell with `Get-ChildItem Env:`
-
+- If you encounter problems with docker-compose, you might want to install python 2.7, especially when a newer python distribution is installed on your machine
 
 ##  Windows with Docker Toolbox
 
