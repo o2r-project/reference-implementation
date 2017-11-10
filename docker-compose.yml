@@ -140,6 +140,7 @@ services:
       SHIPPER_REPO_TOKENS: '{"zenodo_sandbox": "${ZENODO_TOKEN}", "download": "" }'
       SHIPPER_BOTTLE_HOST: "0.0.0.0"
       SHIPPER_BASE_PATH: "/tmp/o2r"
+      PYTHONUNBUFFERED: "0"
 
   substituter:
     image: o2rproject/o2r-substituter:0.3.0
