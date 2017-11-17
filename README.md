@@ -88,6 +88,8 @@ These repositories also require an authentication token.
 
 - [Create access token](https://zenodo.org/login/?next=%2Faccount%2Fsettings%2Fapplications%2Ftokens%2Fnew%2F) for [Zenodo](https://zenodo.org/)
 
+- Note that SHIPPER_REPO_TOKENS is a json object of the following form: `{"zenodo": "$ZENODO_TOKEN", "zenodo_sandbox": "$ZENODO_SANDBOX_TOKEN", "download": "" }`. It might have to be escaped when entered.
+
 #### Elasticsearch host preparation
 
 The implementation uses an [Elasticsearch](http://elastic.co) document search engine.
@@ -109,7 +111,7 @@ To download all o2r source code at once, navigate to the `reference-implementati
 Once all repositories have been pulled successfully, build docker images of the microservices and run them in containers by executing:
 
 ```bash
-O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login O2R_ZENODO_TOKEN=<your token> \
+O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login SHIPPER_REPO_TOKENS={"your_repo": "your_token", ...} \
     make build_images run_local
 ```
 
@@ -122,7 +124,7 @@ All o2r software projects have automatic builds [available on Docker Hub](https:
 The following command executes a `docker-compose` command to pull and run these images.
 
 ```bash
-O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login O2R_ZENODO_TOKEN=<your token> \
+O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login SHIPPER_REPO_TOKENS={"your_repo": "your_token", ...} \
     make run_hub
 ```
 

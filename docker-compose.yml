@@ -129,7 +129,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:e3a837c
+    image: o2rproject/o2r-shipper:f90fb75
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -137,7 +137,7 @@ services:
       - o2rvol:/tmp/o2r
     environment:
       SHIPPER_MONGODB: "mongodb://mongodb"
-      SHIPPER_REPO_TOKENS: '{"zenodo_sandbox": "${ZENODO_TOKEN}", "download": "" }'
+      SHIPPER_REPO_TOKENS: "${SHIPPER_REPO_TOKENS}"
       SHIPPER_BOTTLE_HOST: "0.0.0.0"
       SHIPPER_BASE_PATH: "/tmp/o2r"
       PYTHONUNBUFFERED: "0"
