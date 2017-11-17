@@ -16,14 +16,16 @@ The environmental variables must be passed separately on Windows, followed by th
 setx OAUTH_CLIENT_ID = "<... required ...>"
 setx OAUTH_CLIENT_SECRET = "<... required ...>"
 setx OAUTH_URL_CALLBACK = "http://localhost/api/v1/auth/login"
-setx ZENODO_TOKEN = "<... optional ...>"
+setx SHIPPER_REPO_TOKENS = "<... optional ...>"
 docker-compose up
 ```
 
 The services are available at `http://localhost`.
 
+
 ### Troubleshooting
 
+- Note that SHIPPER_REPO_TOKENS is a json object of the following form: `{"zenodo": "$ZENODO_TOKEN", "zenodo_sandbox": "$ZENODO_SANDBOX_TOKEN", "download": "" }`. It might have to be escaped when entered via the commandline or PowerShell.
 - Make sure that the drive where you cloned this repository to is shared (Docker > Shared Drives), because a configuration file (`nginx.conf`) must be mounted into the service `webserver`.
 - Reconsider using a Linux virtual machine.
 - Install the latest _edge_ channel of Docker, see https://docs.docker.com/docker-for-windows/faqs/#questions-about-stable-and-edge-channels
@@ -41,7 +43,7 @@ When using Compose with Docker Toolbox/Machine on Windows, [volume paths are no 
 Also, the client's defaults (i.e. using `localhost`) does not work. We must mount a config file to point the API to the correct location, see `win/config-toolbox.js`, and use the prepared configuration file `win/docker-compose-toolbox.yml`.
 
 ```bash
-COMPOSE_CONVERT_WINDOWS_PATHS=1 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
+COMPOSE_CONVERT_WINDOWS_PATHS=1 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> SHIPPER_REPO_TOKENS=<...> docker-compose up
 ```
 
 The services are available at `http://<machine-ip>`.
