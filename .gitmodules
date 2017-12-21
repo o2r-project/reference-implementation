@@ -43,3 +43,6 @@
 [submodule "erc-examples"]
 	path = erc-examples
 	url = https://github.com/o2r-project/erc-examples
+[submodule "o2r-inspecter"]
+	path = o2r-inspecter
+	url = https://github.com/o2r-project/o2r-inspecter

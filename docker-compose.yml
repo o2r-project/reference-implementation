@@ -14,7 +14,7 @@
 #
 #
 ---
-version: '3'
+version: '2'
 
 volumes:
   o2rvol: {}
@@ -41,13 +41,35 @@ services:
       - "1234:1234"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
     environment:
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - cluster.name=o2rplatform-es-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "xpack.security.enabled=false"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+#    ports:
+#      - "9200:9200"
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+    environment:
+      - cluster.name=o2rplatform-es-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+      - "xpack.security.enabled=false"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
 
   muncher:
-    image: o2rproject/o2r-muncher:0.12.3
+    image: o2rproject/o2r-muncher:0.13.5
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -57,10 +79,13 @@ services:
     environment:
       - "MUNCHER_MONGODB=mongodb://mongodb"
       - MUNCHER_PORT=8080
+      - MUNCHER_VOLUME=referenceimplementation_o2rvol
+      - MUNCHER_CONTAINER_USER=root
+      - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
 
   loader:
-    image: o2rproject/o2r-loader:0.7.3
+    image: o2rproject/o2r-loader:0.8.1
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -71,6 +96,7 @@ services:
       - "LOADER_MONGODB=mongodb://mongodb"
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+      - LOADER_VOLUME=referenceimplementation_o2rvol
 
   informer:
     image: o2rproject/o2r-informer:0.3.0
@@ -95,11 +121,13 @@ services:
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
       - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
+      - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
       - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: o2rproject/o2r-finder:0.3.2
+    image: o2rproject/o2r-finder:0.5.1
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -107,16 +135,16 @@ services:
     volumes:
       - o2rvol:/tmp/o2r
     environment:
-      - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
+      - "FINDER_MONGODB=mongodb://mongodb"
       - FINDER_PORT=8084
-      - DEBUG=finder
+      - DEBUG=finder,finder:*
       - ELASTIC_SEARCH_URL=elasticsearch:9200
       - "MONGO_DATA_URL=mongodb://mongodb/muncher"
       - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
       - BATCH_COUNT=20
 
   transporter:
-    image: o2rproject/o2r-transporter:0.4.0
+    image: o2rproject/o2r-transporter:0.4.1
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -129,7 +157,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:e3a837c
+    image: o2rproject/o2r-shipper:c4b2d27
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -137,12 +165,13 @@ services:
       - o2rvol:/tmp/o2r
     environment:
       SHIPPER_MONGODB: "mongodb://mongodb"
-      SHIPPER_REPO_TOKENS: '{"zenodo_sandbox": "${ZENODO_TOKEN}", "download": "" }'
+      SHIPPER_REPO_TOKENS: "${SHIPPER_REPO_TOKENS}"
       SHIPPER_BOTTLE_HOST: "0.0.0.0"
       SHIPPER_BASE_PATH: "/tmp/o2r"
+      PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.3.0
+    image: o2rproject/o2r-substituter:0.4.0
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -153,8 +182,17 @@ services:
       - SUBSTITUTER_PORT=8090
       - DEBUG=substituter,substituter:*
 
+  inspecter:
+    image: o2rproject/o2r-inspecter:0.0.1
+    restart: unless-stopped
+    volumes:
+      - o2rvol:/tmp/o2r
+    environment:
+      - INSPECTER_PORT=8091
+      - DEBUGME=inspecter
+
   platform:
-    image: o2rproject/o2r-platform:0.9.3
+    image: o2rproject/o2r-platform:1.0.0
     restart: unless-stopped
 
   webserver:
@@ -165,6 +203,7 @@ services:
       - finder
       - muncher
       - informer
+      - inspecter
       - loader
       - transporter
       - shipper

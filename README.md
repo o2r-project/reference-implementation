@@ -74,7 +74,9 @@ The reference implementation relies on [ORCID](https://orcid.org/) for authentic
 There is no other way to log in on the platform, therefore you must enable your installation of the reference implementation to connect with the ORCID API.
 The client credentials used by the o2r team cannot be shared publicly for security reasons.
 
-You _must_ register a public API client application with ORCID as [described here](https://support.orcid.org/knowledgebase/articles/343182-register-a-public-api-client-application).
+You _must_ register an account and get a authentication tokens for public API client application with **[ORCID Sandbox](https://sandbox.orcid.org/signin)**.
+Alternatively, use your existing ORCID account and register an application as [described here](https://support.orcid.org/knowledgebase/articles/343182-register-a-public-api-client-application).
+Note that in the latter case you must adjust the URLs in the example below: remove the `sandbox.` part.
 
 In the developer tools, use any name, website URL, and description.
 Important is the `Redirect URIs` list, which must include `http://localhost` for your local installation.
@@ -109,7 +111,9 @@ To download all o2r source code at once, navigate to the `reference-implementati
 Once all repositories have been pulled successfully, build docker images of the microservices and run them in containers by executing:
 
 ```bash
-O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login O2R_ZENODO_TOKEN=<your token> \
+OAUTH_CLIENT_ID=<your orcid id> OAUTH_CLIENT_SECRET=<your orcid secret> \
+    OAUTH_URL_AUTHORIZATION=https://sandbox.orcid.org/oauth/authorize OAUTH_URL_TOKEN=https://sandbox.orcid.org/oauth/token OAUTH_URL_CALLBACK=http://localhost/api/v1/auth/login \
+    SHIPPER_REPO_TOKENS="{\"zenodo\": \"<your Zenodo token>\", \"zenodo_sandbox\": \"<your Zenodo Sandbox token>\", "download": \"\" }" \
     make build_images run_local
 ```
 
@@ -122,7 +126,8 @@ All o2r software projects have automatic builds [available on Docker Hub](https:
 The following command executes a `docker-compose` command to pull and run these images.
 
 ```bash
-O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login O2R_ZENODO_TOKEN=<your token> \
+O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login \
+    SHIPPER_REPO_TOKENS="{\"zenodo\": \"<your Zenodo token>\", \"zenodo_sandbox\": \"<your Zenodo Sandbox token>\", "download": \"\" }" \
     make run_hub
 ```
 

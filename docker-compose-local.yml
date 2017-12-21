@@ -14,7 +14,7 @@
 #
 #
 ---
-version: '3'
+version: '2'
 
 volumes:
   o2rvol: {}
@@ -41,10 +41,30 @@ services:
       - "1234:1234"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
     environment:
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - cluster.name=o2rplatform-es-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "xpack.security.enabled=false"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+    environment:
+      - cluster.name=o2rplatform-es-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+      - "xpack.security.enabled=false"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
 
   muncher:
     image: o2r_refimpl_muncher
@@ -95,6 +115,8 @@ services:
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
       - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
+      - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
       - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
@@ -107,9 +129,9 @@ services:
     volumes:
       - o2rvol:/tmp/o2r
     environment:
-      - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
+      - "FINDER_MONGODB=mongodb://mongodb"
       - FINDER_PORT=8084
-      - DEBUG=finder
+      - DEBUG=finder,finder:*
       - ELASTIC_SEARCH_URL=elasticsearch:9200
       - "MONGO_DATA_URL=mongodb://mongodb/muncher"
       - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
@@ -137,9 +159,10 @@ services:
       - o2rvol:/tmp/o2r
     environment:
       SHIPPER_MONGODB: "mongodb://mongodb"
-      SHIPPER_REPO_TOKENS: '{"zenodo_sandbox": "${ZENODO_TOKEN}", "download": "" }'
+      SHIPPER_REPO_TOKENS: "${SHIPPER_REPO_TOKENS}"
       SHIPPER_BOTTLE_HOST: "0.0.0.0"
       SHIPPER_BASE_PATH: "/tmp/o2r"
+      PYTHONUNBUFFERED: "0"
 
   substituter:
     image: o2r_refimpl_substituter
@@ -153,6 +176,15 @@ services:
       - SUBSTITUTER_PORT=8090
       - DEBUG=substituter,substituter:*
 
+  inspecter:
+    image: o2rproject/o2r-inspecter:0.0.1
+    restart: unless-stopped
+    volumes:
+      - o2rvol:/tmp/o2r
+    environment:
+      - INSPECTER_PORT=8091
+      - DEBUGME=inspecter
+
   platform:
     image: o2r_refimpl_platform
     restart: unless-stopped
@@ -161,10 +193,15 @@ services:
     image: nginx:latest
     restart: unless-stopped
     depends_on:
-      - muncher
       - bouncer
+      - finder
+      - muncher
+      - informer
+      - inspecter
+      - loader
       - transporter
-      - platform
+      - shipper
+      - substituter
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
     ports:
