@@ -69,7 +69,7 @@ services:
     mem_limit: 1g
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.5
+    image: o2rproject/o2r-muncher:0.13.8
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -85,7 +85,7 @@ services:
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
 
   loader:
-    image: o2rproject/o2r-loader:0.8.1
+    image: o2rproject/o2r-loader:0.8.3
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -127,7 +127,7 @@ services:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: o2rproject/o2r-finder:0.5.1
+    image: o2rproject/o2r-finder:0.6.0
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -157,7 +157,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:c4b2d27
+    image: o2rproject/o2r-shipper:168ae80
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -171,7 +171,7 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.4.0
+    image: o2rproject/o2r-substituter:0.4.1
     restart: unless-stopped
     depends_on:
       - configmongodb
