@@ -78,6 +78,7 @@ services:
       - "MUNCHER_MONGODB=mongodb://mongodb"
       - MUNCHER_PORT=8080
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+      - "MUNCHER_META_TOOL_CONTAINER=o2r_refimpl_meta"
 
   loader:
     image: o2r_refimpl_loader
@@ -91,6 +92,7 @@ services:
       - "LOADER_MONGODB=mongodb://mongodb"
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+      - "MUNCHER_META_TOOL_CONTAINER=o2r_refimpl_meta"
 
   informer:
     image: o2r_refimpl_informer

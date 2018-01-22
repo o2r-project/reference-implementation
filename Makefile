@@ -26,8 +26,9 @@ build_images:
 	cd o2r-bouncer; 	docker build --tag o2r_refimpl_bouncer 		.; cd ..;
 	cd o2r-finder; 		docker build --tag o2r_refimpl_finder 		.; cd ..;
 	cd o2r-informer; 	docker build --tag o2r_refimpl_informer 	.; cd ..;
-	cd o2r-inspecter; 	docker build --tag o2r_refimpl_insepcter 	.; cd ..;
+	cd o2r-inspecter; 	docker build --tag o2r_refimpl_inspecter 	.; cd ..;
 	cd o2r-loader; 		docker build --tag o2r_refimpl_loader 		.; cd ..;
+	cd o2r-meta; 		docker build --tag o2r_refimpl_meta			.; cd ..;
 	cd o2r-muncher; 	docker build --tag o2r_refimpl_muncher 		.; cd ..;
 	cd o2r-platform; 	docker build --tag o2r_refimpl_platform 	.; cd ..;
 	cd o2r-shipper; 	docker build --tag o2r_refimpl_shipper 		.; cd ..;
@@ -46,6 +47,7 @@ show_versions_local:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_informer 	 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_inspecter 	 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_loader 	 ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_meta 		 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_muncher 	 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_platform 	 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.vcs-ref"}}' o2r_refimpl_shipper 	 ;
@@ -63,6 +65,7 @@ pull_hub_images:
 	docker pull o2rproject/o2r-informer;
 	docker pull o2rproject/o2r-inspecter;
 	docker pull o2rproject/o2r-loader;
+	docker pull o2rproject/o2r-meta;
 	docker pull o2rproject/o2r-muncher;
 	docker pull o2rproject/o2r-platform;
 	docker pull o2rproject/o2r-shipper;
@@ -78,6 +81,7 @@ show_versions_hub:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-informer;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'     o2rproject/o2r-inspecter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'        o2rproject/o2r-loader;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'          o2rproject/o2r-meta;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'       o2rproject/o2r-muncher;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-platform;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.vcs-ref"}}'       o2rproject/o2r-shipper;
