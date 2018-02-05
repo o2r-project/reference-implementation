@@ -19,7 +19,8 @@ init:
 	git submodule add https://github.com/o2r-project/o2r-web-api
 
 update:
-	git submodule update --init --recursive
+	git pull --recurse-submodules
+	git submodule update --init --recursive --remote
 	git submodule foreach git pull origin master
 
 build_images:
