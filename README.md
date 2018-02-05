@@ -166,6 +166,13 @@ docker volume ls
 docker volume inspect reference-implementation_o2r_test_storage
 ```
 
+## Read documentation
+
+This repository also contains specification and documentation projects.
+These documentations are created in Markdown format and can be rendered to HTML and PDF documents using the make target `build_documentation`, which relies on a local `Dockerfile` for the rendering runtime environment.
+The PDF files are moved to the project root directory.
+The HTML files can be found in the respective projects in the `site` directory.
+
 ## Reproducibility
 
 This repository serves the goal to make the developments of the o2r project reproducible, not only by running the reference implementation (see above) but also by creating an archivable package of the software.

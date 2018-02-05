@@ -1,0 +1,44 @@
+#
+# A Dockerfile for an environment to build the documentation contained in this repository
+#
+
+FROM rocker/verse
+
+# System dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  python3-pip \
+  python3-setuptools \
+  # next one needed by one of the tex packages
+  xzdec \
+  # next one needed for untaring wkhtmltox
+  xz-utils \
+  libssl1.0-dev
+
+# ERC spec, see erc-spec/.travis.yml
+
+# need newer pandoc
+RUN wget https://github.com/jgm/pandoc/releases/download/2.1.1/pandoc-2.1.1-linux.tar.gz \
+  && tar -xvzf pandoc*.tar.gz --strip-components 1 -C /usr/local/
+
+RUN tlmgr init-usertree \
+  && tlmgr install xcolor mdframed needspace
+RUN pip3 install --upgrade pip \
+  && pip3 install \
+  mkdocs \
+  pymdown-extensions \
+  mkdocs-pandoc \
+  pandoc-latex-admonition \
+  git+https://github.com/o2r-project/mkdocs-combine.git
+
+# architecture, see architecture/.travis.yml
+RUN pip3 install mkdocs mkdocs-cinder markdown-include
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  xfonts-base xfonts-75dpi
+RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
+  && tar -xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
+  && mv wkhtmltox/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
+
+VOLUME /doc
+WORKDIR /doc
+
+USER 1000
