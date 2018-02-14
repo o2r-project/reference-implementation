@@ -89,12 +89,12 @@ show_versions_hub:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-substituter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-transporter;
 
-clean:
+clean_containers_and_images:
 	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
 	docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
 build_documentation:
-	rm *.pdf
+	rm -f *.pdf
 	docker build --tag docbuilder --file etc/Dockerfile.documentations .
 	docker run -it -v $(CURDIR)/architecture:/doc:rw docbuilder make build pdf 
 	docker run -it -v $(CURDIR)/o2r-web-api:/doc:rw docbuilder  make build pdf 
@@ -104,8 +104,7 @@ build_documentation:
 	mv o2r-web-api/*.pdf .
 	echo "ERC, architecture, and web API documentation created, see files PDF files in the project root directory"
 
-release: build_documentation
-	git clone --recursive https://github.com/o2r-project/reference-implementation
+release: update build_documentation
 	# TODO build all images, export them to files
 
 reproduce:
