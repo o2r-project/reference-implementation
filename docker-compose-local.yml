@@ -188,7 +188,7 @@ services:
       - DEBUGME=inspecter
 
   guestlister:
-    image: o2rproject/o2r-guestlister:0.1.0
+    image: o2r_refimpl_guestlister
     restart: unless-stopped
     depends_on:
       - configmongodb
