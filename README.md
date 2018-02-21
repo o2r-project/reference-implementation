@@ -79,9 +79,7 @@ This allows access to the o2r platform by selecting one of three demo users. The
 
 The reference implementation can be alternatively configured to use [ORCID](https://orcid.org/) for authentication and authorisation, replacing the offline login provided by o2r-guestlister.
 
-This requires an ORCID account which provides authentication tokens for public API client application with **[ORCID Sandbox](https://sandbox.orcid.org/signin)**.
-
-Alternatively, use your existing ORCID account and register an application as [described here](https://support.orcid.org/knowledgebase/articles/343182-register-a-public-api-client-application).
+This requires an ORCID account which provides authentication tokens for public API client application with **[ORCID Sandbox](https://sandbox.orcid.org/signin)** (preferred for testing) or the registering an application as [described here](https://support.orcid.org/knowledgebase/articles/343182-register-a-public-api-client-application) with your regular ORCID account.
 
 In the developer tools, use any name, website URL, and description.
 Important is the `Redirect URIs` list, which must include `http://localhost` for your local installation.
@@ -91,6 +89,7 @@ The client ID, client secret, redirect URI and the OAuth URLs have to be provide
 ##### Repositories (optional)
 
 The reference implementation can deliver the created ERC to different repositories.
+By default only the "Download" repository is supported, i.e. users may download a complete ERC as an archive file.
 These repositories also require an authentication token.
 
 - [Create access token](https://zenodo.org/login/?next=%2Faccount%2Fsettings%2Fapplications%2Ftokens%2Fnew%2F) for [Zenodo](https://zenodo.org/)
