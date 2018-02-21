@@ -31,6 +31,7 @@ The documentation is also available online for reading, though availability may 
 | platform (web UI) | `o2r-platform` | https://github.com/o2r-project/o2r-platform|
 | shipper (microservice) | `o2r-shipper` | https://github.com/o2r-project/o2r-shipper |
 | substituter (microservice) | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
+| guestlister (microservice) | `o2r-guestlister` | https://github.com/o2r-project/o2r-guestlister |
 | transporter (microservice) | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
 
 ### Supported operating systems
@@ -70,11 +71,13 @@ Run `make update` or the respective commands on your operating system to initial
 
 ##### o2r-guestlister
 
-By default, the reference implementation uses the offline OAuth2 implementation provided by the [o2r-guestlister](https://github.com/o2r-project/o2r-guestlister). 
+By default, the reference implementation uses the offline OAuth2 implementation provided by the [o2r-guestlister](https://github.com/o2r-project/o2r-guestlister).
+
+This allows access to the o2r platform by selecting one of three demo users. The users represent different user roles with different levels, i.e. an admin (level 1000), an editor (level 500) and a basic author (level 100).
 
 ##### ORCID (optional)
 
-The reference implementation can be configured to use [ORCID](https://orcid.org/) for authentication and authorisation, replacing the offline login provided by o2r-guestlister.
+The reference implementation can be alternatively configured to use [ORCID](https://orcid.org/) for authentication and authorisation, replacing the offline login provided by o2r-guestlister.
 
 This requires an ORCID account which provides authentication tokens for public API client application with **[ORCID Sandbox](https://sandbox.orcid.org/signin)**.
 
@@ -93,6 +96,12 @@ These repositories also require an authentication token.
 - [Create access token](https://zenodo.org/login/?next=%2Faccount%2Fsettings%2Fapplications%2Ftokens%2Fnew%2F) for [Zenodo](https://zenodo.org/)
 
 These tokens can be provided to the docker-compose configurations by setting them as environment variables in the `.env` file, similar to the ORCID configuration.
+
+Modify the `SHIPPER_REPO_TOKENS` entry in the `.env` file to include the tokens:
+
+```
+SHIPPER_REPO_TOKENS={"zenodo": "<your Zenodo token>", "zenodo_sandbox": "<your Zenodo Sandbox token>", "download": "" }
+```
 
 #### Elasticsearch host preparation
 
