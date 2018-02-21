@@ -75,7 +75,7 @@ pull_hub_images:
 	docker pull o2rproject/o2r-shipper;
 	docker pull o2rproject/o2r-substituter;
 	docker pull o2rproject/o2r-transporter;
-    docker pull o2rproject/o2r-guestlister;
+	docker pull o2rproject/o2r-guestlister;
 
 run_hub_images:
 	docker-compose up;
