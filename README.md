@@ -31,6 +31,7 @@ The documentation is also available online for reading, though availability may 
 | platform (web UI) | `o2r-platform` | https://github.com/o2r-project/o2r-platform|
 | shipper (microservice) | `o2r-shipper` | https://github.com/o2r-project/o2r-shipper |
 | substituter (microservice) | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
+| guestlister (microservice) | `o2r-guestlister` | https://github.com/o2r-project/o2r-guestlister |
 | transporter (microservice) | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
 
 ### Supported operating systems
@@ -68,27 +69,38 @@ Run `make update` or the respective commands on your operating system to initial
 
 #### Accounts and tokens
 
-##### ORCID
+##### o2r-guestlister
 
-The reference implementation relies on [ORCID](https://orcid.org/) for authentication and authorisation.
-There is no other way to log in on the platform, therefore you must enable your installation of the reference implementation to connect with the ORCID API.
-The client credentials used by the o2r team cannot be shared publicly for security reasons.
+By default, the reference implementation uses the offline OAuth2 implementation provided by the [o2r-guestlister](https://github.com/o2r-project/o2r-guestlister).
 
-You _must_ register an account and get a authentication tokens for public API client application with **[ORCID Sandbox](https://sandbox.orcid.org/signin)**.
-Alternatively, use your existing ORCID account and register an application as [described here](https://support.orcid.org/knowledgebase/articles/343182-register-a-public-api-client-application).
-Note that in the latter case you must adjust the URLs in the example below: remove the `sandbox.` part.
+This allows access to the o2r platform by selecting one of three demo users. The users represent different user roles with different levels, i.e. an admin (level 1000), an editor (level 500) and a basic author (level 100).
+
+##### ORCID (optional)
+
+The reference implementation can be alternatively configured to use [ORCID](https://orcid.org/) for authentication and authorisation, replacing the offline login provided by o2r-guestlister.
+
+This requires an ORCID account which provides authentication tokens for public API client application with **[ORCID Sandbox](https://sandbox.orcid.org/signin)** (preferred for testing) or the registering an application as [described here](https://support.orcid.org/knowledgebase/articles/343182-register-a-public-api-client-application) with your regular ORCID account.
 
 In the developer tools, use any name, website URL, and description.
 Important is the `Redirect URIs` list, which must include `http://localhost` for your local installation.
 
-The client ID, client secret, and redirect URI must then be provided to the docker-compose configurations via environment variables as shown below.
+The client ID, client secret, redirect URI and the OAuth URLs have to be provided by modifying the `.env` file in the base directory. Note that environment variables provided throught the shell have priority over the `.env` file configuration. For more information on how the `.env` file works, see the docker-compose [documentation](https://docs.docker.com/compose/env-file/).
 
 ##### Repositories (optional)
 
 The reference implementation can deliver the created ERC to different repositories.
+By default only the "Download" repository is supported, i.e. users may download a complete ERC as an archive file.
 These repositories also require an authentication token.
 
 - [Create access token](https://zenodo.org/login/?next=%2Faccount%2Fsettings%2Fapplications%2Ftokens%2Fnew%2F) for [Zenodo](https://zenodo.org/)
+
+These tokens can be provided to the docker-compose configurations by setting them as environment variables in the `.env` file, similar to the ORCID configuration.
+
+Modify the `SHIPPER_REPO_TOKENS` entry in the `.env` file to include the tokens:
+
+```
+SHIPPER_REPO_TOKENS={"zenodo": "<your Zenodo token>", "zenodo_sandbox": "<your Zenodo Sandbox token>", "download": "" }
+```
 
 #### Elasticsearch host preparation
 
@@ -111,9 +123,6 @@ To download all o2r source code at once, navigate to the `reference-implementati
 Once all repositories have been pulled successfully, build docker images of the microservices and run them in containers by executing:
 
 ```bash
-OAUTH_CLIENT_ID=<your orcid id> OAUTH_CLIENT_SECRET=<your orcid secret> \
-    OAUTH_URL_AUTHORIZATION=https://sandbox.orcid.org/oauth/authorize OAUTH_URL_TOKEN=https://sandbox.orcid.org/oauth/token OAUTH_URL_CALLBACK=http://localhost/api/v1/auth/login \
-    SHIPPER_REPO_TOKENS="{\"zenodo\": \"<your Zenodo token>\", \"zenodo_sandbox\": \"<your Zenodo Sandbox token>\", "download": \"\" }" \
     make build_images run_local
 ```
 
@@ -126,8 +135,6 @@ All o2r software projects have automatic builds [available on Docker Hub](https:
 The following command executes a `docker-compose` command to pull and run these images.
 
 ```bash
-O2R_ORCID_ID=<your orcid id> O2R_ORCID_SECRET=<your orcid secret> O2R_ORCID_CALLBACK=http://localhost/api/v1/auth/login \
-    SHIPPER_REPO_TOKENS="{\"zenodo\": \"<your Zenodo token>\", \"zenodo_sandbox\": \"<your Zenodo Sandbox token>\", "download": \"\" }" \
     make run_hub
 ```
 

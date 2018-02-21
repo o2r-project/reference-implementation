@@ -17,6 +17,7 @@ init:
 	git submodule add https://github.com/o2r-project/o2r-substituter
 	git submodule add https://github.com/o2r-project/o2r-transporter
 	git submodule add https://github.com/o2r-project/o2r-web-api
+	git submodule add https://github.com/o2r-project/o2r-guestlister
 
 update:
 	git pull --recurse-submodules
@@ -35,9 +36,10 @@ build_images:
 	cd o2r-shipper; 	docker build --tag o2r_refimpl_shipper 		.; cd ..;
 	cd o2r-substituter; docker build --tag o2r_refimpl_substituter 	.; cd ..;
 	cd o2r-transporter; docker build --tag o2r_refimpl_transporter 	.; cd ..;
+	cd o2r-guestlister; docker build --tag o2r_refimpl_guestlister 	.; cd ..;
 
 run_local:
-	OAUTH_CLIENT_ID=$(value O2R_ORCID_ID) OAUTH_CLIENT_SECRET=$(value O2R_ORCID_SECRET) OAUTH_URL_CALLBACK=$(value O2R_ORCID_CALLBACK) ZENODO_TOKEN=$(value O2R_ZENODO_TOKEN) docker-compose --file docker-compose-local.yml up;
+	docker-compose --file docker-compose-local.yml up;
 
 stop_local:
 	docker-compose --file docker-compose-local.yml down;
@@ -54,6 +56,7 @@ show_versions_local:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.vcs-ref"}}' o2r_refimpl_shipper 	 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_substituter ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_transporter ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_guestlister ;
 
 run_hub: pull_hub_images run_hub_images
 
@@ -72,9 +75,10 @@ pull_hub_images:
 	docker pull o2rproject/o2r-shipper;
 	docker pull o2rproject/o2r-substituter;
 	docker pull o2rproject/o2r-transporter;
+	docker pull o2rproject/o2r-guestlister;
 
 run_hub_images:
-	OAUTH_CLIENT_ID=$(value O2R_ORCID_ID) OAUTH_CLIENT_SECRET=$(value O2R_ORCID_SECRET) OAUTH_URL_CALLBACK=$(value O2R_ORCID_CALLBACK) ZENODO_TOKEN=$(value O2R_ZENODO_TOKEN) docker-compose up;
+	docker-compose up;
 
 show_versions_hub:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	   o2rproject/o2r-bouncer;
@@ -88,6 +92,7 @@ show_versions_hub:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.vcs-ref"}}'       o2rproject/o2r-shipper;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-substituter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-transporter;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-guestlister;
 
 clean:
 	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f

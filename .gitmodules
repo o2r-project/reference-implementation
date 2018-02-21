@@ -46,3 +46,6 @@
 [submodule "o2r-inspecter"]
 	path = o2r-inspecter
 	url = https://github.com/o2r-project/o2r-inspecter
+[submodule "o2r-guestlister"]
+	path = o2r-guestlister
+	url = https://github.com/o2r-project/o2r-guestlister
