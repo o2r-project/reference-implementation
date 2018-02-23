@@ -187,6 +187,21 @@ services:
       - INSPECTER_PORT=8091
       - DEBUGME=inspecter
 
+  guestlister:
+    image: o2r_refimpl_guestlister
+    restart: unless-stopped
+    depends_on:
+      - configmongodb
+    environment:
+      - "GUESTLISTER_MONGODB=mongodb://mongodb"
+      - GUESTLISTER_PORT=8383
+      - DEBUG=guestlister
+      - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
+      - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
+
   platform:
     image: o2r_refimpl_platform
     restart: unless-stopped

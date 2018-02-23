@@ -3,24 +3,22 @@
 This document contains Windows-specific configuration and steps.
 
 **Please carefully read the sections "Basics" and "Prerequisites" in the file `README.md` for general information.
-In the sections "Build images from source and run" and "Build images from source and run", please be aware of the general remarks but use the commands from this file instead.
-Take a look at the "Troubleshooting" sections in this file if you run into problems.
+In the sections "Build images from source and run" and "Build images from source and run", please be aware of the general remarks but use the `docker-compose` command from this file instead of the commands using `make`.
+Take a look at the "Troubleshooting" sections in this file if you run into problems.**
 
 ## Windows with Docker for Windows
 
 [Docker for Windows](https://docs.docker.com/docker-for-windows/) is available for 64bit Windows 10 Pro, Enterprise and Education (with Hyper-V available) and on Windows Server 2016 (see [Docker Docs](https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install)).
 
-The environmental variables must be passed separately on Windows, followed by the docker-compose commands:
+Simply run the following command to start the services:
 
 ```shell
-setx OAUTH_CLIENT_ID = "<... required ...>"
-setx OAUTH_CLIENT_SECRET = "<... required ...>"
-setx OAUTH_URL_CALLBACK = "http://localhost/api/v1/auth/login"
-setx ZENODO_TOKEN = "<... optional ...>"
 docker-compose up
 ```
 
 The services are available at `http://localhost`.
+
+Advanced configuration can be applied by editing the `.env` file or by specifying the settings as environment variables before executing the `docker-compose up` command.
 
 ### Troubleshooting
 
@@ -38,10 +36,10 @@ If your system does not meet the requirements to run Docker for Windows, you can
 
 When using Compose with Docker Toolbox/Machine on Windows, [volume paths are no longer converted from by default](https://github.com/docker/compose/releases/tag/1.9.0), but we need this conversion to be able to mount the docker volume to the o2r microservices. To re-enable this conversion for `docker-compose >= 1.9.0` set the environment variable `COMPOSE_CONVERT_WINDOWS_PATHS=1`.
 
-Also, the client's defaults (i.e. using `localhost`) does not work. We must mount a config file to point the API to the correct location, see `win/config-toolbox.js`, and use the prepared configuration file `win/docker-compose-toolbox.yml`.
+Add `COMPOSE_CONVERT_WINDOWS_PATHS=1` to the `.env` file and run:
 
 ```bash
-COMPOSE_CONVERT_WINDOWS_PATHS=1 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
+docker-compose up
 ```
 
 The services are available at `http://<machine-ip>`.
