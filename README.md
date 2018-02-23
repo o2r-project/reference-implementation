@@ -120,13 +120,13 @@ To download all o2r source code at once, navigate to the `reference-implementati
     make update
 ```
 
-Once all repositories have been pulled successfully, build docker images of the microservices and run them in containers by executing:
+Once all repositories have been pulled successfully, build Docker images of the microservices and run them in containers by executing:
 
 ```bash
-    make build_images run_local
+    make local
 ```
 
-Wait for a while, then open **http://localhost**.
+Wait until the log shows no new messages, then open **http://localhost** and continue in section ["Use platform"](#use-platform).
 
 ### Download images and run
 
@@ -135,10 +135,10 @@ All o2r software projects have automatic builds [available on Docker Hub](https:
 The following command executes a `docker-compose` command to pull and run these images.
 
 ```bash
-    make run_hub
+    make hub
 ```
 
-Wait a bit, then open **http://localhost**.
+Wait until the log shows no new messages, then open **http://localhost** and continue in section ["Use platform"](#use-platform).
 
 ### Load data
 
@@ -146,7 +146,15 @@ The o2r API supports two way to load scientific workflows: direct upload as a ZI
 
 Ready to use **Direct upload** examples are available in the directory `erc-examples`.
 
-Examples for loading from a public share are available here: https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA (see file `README.txt`).
+Examples for loading from a public share are available [in this online share](https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA) (see file `README.txt`) and via the "EXAMPLES" menu in the "Create" section of the platform website.
+
+### Use platform
+
+1. Click on "LOGIN" in the upper right hand corner
+1. Select one of the available users, e.g. "Author"
+1. In the "Create" section of the platform website, select a workspace from the "EXAMPLES" menu
+1. Fill in required metadata
+1. Finish the upload and open the ERC page: explore the running job and all interaction possiblities
 
 ### Explore back-end
 

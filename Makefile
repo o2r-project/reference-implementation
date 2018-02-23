@@ -24,7 +24,7 @@ update:
 	git submodule update --init --recursive --remote
 	git submodule foreach git pull origin master
 
-build_images:
+local_images:
 	cd o2r-bouncer; 	docker build --tag o2r_refimpl_bouncer 		.; cd ..;
 	cd o2r-finder; 		docker build --tag o2r_refimpl_finder 		.; cd ..;
 	cd o2r-informer; 	docker build --tag o2r_refimpl_informer 	.; cd ..;
@@ -38,13 +38,15 @@ build_images:
 	cd o2r-transporter; docker build --tag o2r_refimpl_transporter 	.; cd ..;
 	cd o2r-guestlister; docker build --tag o2r_refimpl_guestlister 	.; cd ..;
 
-run_local:
+local_up:
 	docker-compose --file docker-compose-local.yml up;
 
-stop_local:
+local_down:
 	docker-compose --file docker-compose-local.yml down;
 
-show_versions_local:
+local: local_images local_versions local_up
+
+local_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bouncer 	 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_finder 	 ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_informer 	 ;
@@ -58,12 +60,12 @@ show_versions_local:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_transporter ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_guestlister ;
 
-run_hub: pull_hub_images run_hub_images
+hub: hub_images hub_versions hub_up
 
-stop_hub:
+hub_down:
 	docker-compose down;
 
-pull_hub_images:
+hub_images:
 	docker pull o2rproject/o2r-bouncer;
 	docker pull o2rproject/o2r-finder;
 	docker pull o2rproject/o2r-informer;
@@ -77,10 +79,10 @@ pull_hub_images:
 	docker pull o2rproject/o2r-transporter;
 	docker pull o2rproject/o2r-guestlister;
 
-run_hub_images:
+hub_up:
 	docker-compose up;
 
-show_versions_hub:
+hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	   o2rproject/o2r-bouncer;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	    o2rproject/o2r-finder;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-informer;

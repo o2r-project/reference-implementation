@@ -86,7 +86,7 @@ services:
       - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559"
 
   loader:
-    image: o2rproject/o2r-loader:0.8.3
+    image: o2rproject/o2r-loader:0.10.0
     restart: unless-stopped
     depends_on:
       - configmongodb
