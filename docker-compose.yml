@@ -69,7 +69,7 @@ services:
     mem_limit: 1g
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.8
+    image: o2rproject/o2r-muncher:0.14.3
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -83,6 +83,7 @@ services:
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559"
 
   loader:
     image: o2rproject/o2r-loader:0.8.3
@@ -97,6 +98,7 @@ services:
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=referenceimplementation_o2rvol
+      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559"
 
   informer:
     image: o2rproject/o2r-informer:0.3.0
@@ -144,7 +146,7 @@ services:
       - BATCH_COUNT=20
 
   transporter:
-    image: o2rproject/o2r-transporter:0.4.1
+    image: o2rproject/o2r-transporter:0.5.0
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -157,7 +159,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:168ae80
+    image: o2rproject/o2r-shipper:e7398ab
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -171,7 +173,7 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.4.1
+    image: o2rproject/o2r-substituter:0.4.3
     restart: unless-stopped
     depends_on:
       - configmongodb
