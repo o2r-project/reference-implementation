@@ -69,7 +69,7 @@ services:
     mem_limit: 1g
 
   muncher:
-    image: o2rproject/o2r-muncher:0.14.3
+    image: o2rproject/o2r-muncher:0.15.0
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -129,7 +129,7 @@ services:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: o2rproject/o2r-finder:0.6.0
+    image: o2rproject/o2r-finder:0.6.1
     restart: unless-stopped
     depends_on:
       - configmongodb
