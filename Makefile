@@ -62,8 +62,8 @@ local_versions:
 
 hub: hub_images hub_versions hub_up
 
-hub_down:
-	docker-compose down;
+hub_down_volume:
+	docker-compose down --volume;
 
 hub_images:
 	docker pull o2rproject/o2r-bouncer;
@@ -96,7 +96,7 @@ hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-transporter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-guestlister;
 
-clean_containers_and_images:
+clean: hub_down_volume
 	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
 	docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
