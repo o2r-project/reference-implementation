@@ -133,7 +133,7 @@ services:
       - ELASTIC_SEARCH_URL=elasticsearch:9200
       - "MONGO_DATA_URL=mongodb://mongodb/muncher"
       - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
-      - BATCH_COUNT=20
+      - BATCH_COUNT=5
 
   transporter:
     image: o2r_refimpl_transporter

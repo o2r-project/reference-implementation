@@ -69,7 +69,7 @@ services:
     mem_limit: 1g
 
   muncher:
-    image: o2rproject/o2r-muncher:0.15.0
+    image: o2rproject/o2r-muncher:0.17.0
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -139,7 +139,7 @@ services:
       - ELASTIC_SEARCH_URL=elasticsearch:9200
       - "MONGO_DATA_URL=mongodb://mongodb/muncher"
       - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
-      - BATCH_COUNT=20
+      - BATCH_COUNT=5
 
   transporter:
     image: o2rproject/o2r-transporter:0.5.0
