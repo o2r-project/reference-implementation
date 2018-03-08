@@ -112,7 +112,7 @@ services:
       - DEBUG=informer
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.10.1
+    image: o2rproject/o2r-bouncer:0.11.0
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -121,12 +121,8 @@ services:
       - BOUNCER_PORT=8083
       - DEBUG=bouncer
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
-      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
-      - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
-      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
     image: o2rproject/o2r-finder:0.6.1
@@ -194,7 +190,7 @@ services:
       - DEBUGME=inspecter
 
   guestlister:
-    image: o2rproject/o2r-guestlister:0.1.0
+    image: o2rproject/o2r-guestlister:0.2.0
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -203,8 +199,6 @@ services:
       - GUESTLISTER_PORT=8383
       - DEBUG=guestlister
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
-      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
 
