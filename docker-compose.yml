@@ -106,7 +106,7 @@ services:
     depends_on:
       - configmongodb
     environment:
-      - "INFORMER_MONGODB=mongodb://mongodb"
+      - "INFORMER_MONGODB=mongodb://mongodb:27017"
       - INFORMER_MONGODB_HOST=mongodb
       - INFORMER_PORT=8082
       - DEBUG=informer
@@ -190,7 +190,7 @@ services:
       - DEBUGME=inspecter
 
   guestlister:
-    image: o2rproject/o2r-guestlister:0.2.0
+    image: o2rproject/o2r-guestlister:0.2.1
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -221,7 +221,7 @@ services:
       - substituter
       - guestlister
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./etc/nginx.conf:/etc/nginx/nginx.conf:ro"
     ports:
       - "80:80"
 

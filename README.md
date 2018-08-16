@@ -17,8 +17,8 @@ The documentation is also available online for reading, though availability may 
 
 | Component | directory | online |
 | ------ | ------ | ------ |
-| ERC specification (document) | `erc-spec` | http://o2r.info/erc-spec/ |
-| Web API specification (document) | `o2r-web-api` | https://github.com/o2r-project/o2r-web-api |
+| ERC specification (document) | `erc-spec` | https://o2r.info/erc-spec/ |
+| Web API specification (document) | `api` | https://github.com/o2r-project/api |
 | Architecture specification (document) | `architecture` | https://github.com/o2r-project/architecture |
 | ERC checker (library/tool) | `erc-checker` | https://github.com/o2r-project/erc-checker/ |
 | ERC and workspace examples (misc) | `erc-examples` | https://github.com/o2r-project/erc-examples |
@@ -54,7 +54,7 @@ If you are familiar with virtual machines (VMs) we strongly consider you run the
 #### Software
 
 The o2r reference implementation is build on [Docker](http://docker.com/).
-You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Community Edition, _edge_ channel, tested with version `17.09.0-ce` but later version should work) and [docker-compose](https://docs.docker.com/compose/) (version `1.13.0` or higher) first to continue.
+You must [install Docker](https://www.docker.com/get-docker) (i.e. Docker Community Edition, tested with version `17.09.0-ce` but later versions should work) and [docker-compose](https://docs.docker.com/compose/) (version `1.13.0` or higher) first to continue.
 
 The tasks below are automated using [Make](https://en.wikipedia.org/wiki/Make_(software)).
 Make sure that you have GNU Make (tested) or one of the derivatives (not tested) running on your system.
@@ -117,13 +117,13 @@ This repository already includes a `.gitmodules` file, which lists all required 
 To download all o2r source code at once, navigate to the `reference-implementation` base directory and use
 
 ```bash
-    make update
+make update
 ```
 
 Once all repositories have been pulled successfully, build Docker images of the microservices and run them in containers by executing:
 
 ```bash
-    make local
+make local
 ```
 
 Wait until the log shows no new messages, then open **http://localhost** and continue in section ["Use platform"](#use-platform).
@@ -135,7 +135,7 @@ All o2r software projects have automatic builds [available on Docker Hub](https:
 The following command executes a `docker-compose` command to pull and run these images.
 
 ```bash
-    make hub
+make hub
 ```
 
 Wait until the log shows no new messages, then open **http://localhost** and continue in section ["Use platform"](#use-platform).

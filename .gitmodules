@@ -23,7 +23,7 @@
 	path = o2r-platform
 	url = https://github.com/o2r-project/o2r-platform
 [submodule "o2r-web-api"]
-	path = o2r-web-api
+	path = api
 	url = https://github.com/o2r-project/o2r-web-api
 [submodule "erc-spec"]
 	path = erc-spec
@@ -49,3 +49,6 @@
 [submodule "o2r-guestlister"]
 	path = o2r-guestlister
 	url = https://github.com/o2r-project/o2r-guestlister
+[submodule "o2r-bindings"]
+	path = o2r-bindings
+	url = https://github.com/o2r-project/o2r-bindings

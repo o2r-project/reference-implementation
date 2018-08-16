@@ -1,6 +1,7 @@
 init:
 	git clone https://github.com/o2r-project/reference-implementation
 	cd reference-implementation
+	git submodule add https://github.com/o2r-project/api
 	git submodule add https://github.com/o2r-project/architecture
 	git submodule add https://github.com/o2r-project/erc-spec
 	git submodule add https://github.com/o2r-project/erc-checker
@@ -16,8 +17,8 @@ init:
 	git submodule add https://github.com/o2r-project/o2r-shipper
 	git submodule add https://github.com/o2r-project/o2r-substituter
 	git submodule add https://github.com/o2r-project/o2r-transporter
-	git submodule add https://github.com/o2r-project/o2r-web-api
 	git submodule add https://github.com/o2r-project/o2r-guestlister
+	git submodule add https://github.com/o2r-project/o2r-bindings
 
 update:
 	git pull --recurse-submodules
@@ -37,6 +38,7 @@ local_images:
 	cd o2r-substituter; docker build --tag o2r_refimpl_substituter 	.; cd ..;
 	cd o2r-transporter; docker build --tag o2r_refimpl_transporter 	.; cd ..;
 	cd o2r-guestlister; docker build --tag o2r_refimpl_guestlister 	.; cd ..;
+	cd o2r-bindings; 	docker build --tag o2r_refimpl_bindins	 	.; cd ..;
 
 local_up:
 	docker-compose --file docker-compose-local.yml up;
@@ -78,6 +80,7 @@ hub_images:
 	docker pull o2rproject/o2r-substituter;
 	docker pull o2rproject/o2r-transporter;
 	docker pull o2rproject/o2r-guestlister;
+	docker pull o2rproject/o2r-bindings;
 
 hub_up:
 	docker-compose up;
@@ -95,6 +98,7 @@ hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-substituter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-transporter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-guestlister;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-bindings;
 
 clean: hub_down_volume
 	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
@@ -104,11 +108,11 @@ build_documentation:
 	rm -f *.pdf
 	docker build --tag docbuilder --file etc/Dockerfile.documentations .
 	docker run -it -v $(CURDIR)/architecture:/doc:rw docbuilder make build pdf 
-	docker run -it -v $(CURDIR)/o2r-web-api:/doc:rw docbuilder  make build pdf 
-	docker run -it -v $(CURDIR)/erc-spec:/doc:rw     docbuilder make build pdf_tinytex
+	docker run -it -v $(CURDIR)/api-spec:/doc:rw docbuilder make build pdf 
+	docker run -it -v $(CURDIR)/erc-spec:/doc:rw docbuilder make build pdf_tinytex
 	mv architecture/site/*.pdf .
 	mv erc-spec/*.pdf .
-	mv o2r-web-api/*.pdf .
+	mv api-spec/*.pdf .
 	echo "ERC, architecture, and web API documentation created, see files PDF files in the project root directory"
 
 release: update build_documentation
@@ -116,3 +120,5 @@ release: update build_documentation
 
 reproduce:
 	# TODO import images from files
+	# run make local
+	# deploy some examples
