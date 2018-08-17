@@ -52,3 +52,6 @@
 [submodule "o2r-bindings"]
 	path = o2r-bindings
 	url = https://github.com/o2r-project/o2r-bindings
+[submodule "containerit"]
+	path = containerit
+	url = https://github.com/o2r-project/containerit

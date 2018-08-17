@@ -3,6 +3,7 @@ init:
 	cd reference-implementation
 	git submodule add https://github.com/o2r-project/api
 	git submodule add https://github.com/o2r-project/architecture
+	git submodule add https://github.com/o2r-project/containerit
 	git submodule add https://github.com/o2r-project/erc-spec
 	git submodule add https://github.com/o2r-project/erc-checker
 	git submodule add https://github.com/o2r-project/erc-examples
@@ -19,26 +20,12 @@ init:
 	git submodule add https://github.com/o2r-project/o2r-transporter
 	git submodule add https://github.com/o2r-project/o2r-guestlister
 	git submodule add https://github.com/o2r-project/o2r-bindings
+	git submodule add https://github.com/o2r-project/containerit
 
 update:
 	git pull --recurse-submodules
 	git submodule update --init --recursive --remote
 	git submodule foreach git pull origin master
-
-local_images:
-	cd o2r-bouncer; 	docker build --tag o2r_refimpl_bouncer 		.; cd ..;
-	cd o2r-finder; 		docker build --tag o2r_refimpl_finder 		.; cd ..;
-	cd o2r-informer; 	docker build --tag o2r_refimpl_informer 	.; cd ..;
-	cd o2r-inspecter; 	docker build --tag o2r_refimpl_inspecter 	.; cd ..;
-	cd o2r-loader; 		docker build --tag o2r_refimpl_loader 		.; cd ..;
-	cd o2r-meta; 		docker build --tag o2r_refimpl_meta			.; cd ..;
-	cd o2r-muncher; 	docker build --tag o2r_refimpl_muncher 		.; cd ..;
-	cd o2r-platform; 	docker build --tag o2r_refimpl_platform 	.; cd ..;
-	cd o2r-shipper; 	docker build --tag o2r_refimpl_shipper 		.; cd ..;
-	cd o2r-substituter; docker build --tag o2r_refimpl_substituter 	.; cd ..;
-	cd o2r-transporter; docker build --tag o2r_refimpl_transporter 	.; cd ..;
-	cd o2r-guestlister; docker build --tag o2r_refimpl_guestlister 	.; cd ..;
-	cd o2r-bindings; 	docker build --tag o2r_refimpl_bindins	 	.; cd ..;
 
 local_up:
 	docker-compose --file docker-compose-local.yml up;
@@ -46,7 +33,10 @@ local_up:
 local_down:
 	docker-compose --file docker-compose-local.yml down;
 
-local: local_images local_versions local_up
+local_down_volume:
+	docker-compose --file docker-compose-local.yml down --volume;
+
+local: local_up
 
 local_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bouncer 	 ;
@@ -61,6 +51,8 @@ local_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_substituter ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_transporter ;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_guestlister ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bindings    ;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_containerit ;
 
 hub: hub_images hub_versions hub_up
 
@@ -68,6 +60,7 @@ hub_down_volume:
 	docker-compose down --volume;
 
 hub_images:
+	# pull ":latest" images so that we don't need to update versions here as well
 	docker pull o2rproject/o2r-bouncer;
 	docker pull o2rproject/o2r-finder;
 	docker pull o2rproject/o2r-informer;
@@ -99,8 +92,9 @@ hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-transporter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-guestlister;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-bindings;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'       o2rproject/containerit;
 
-clean: hub_down_volume
+clean: hub_down_volume local_down_volume
 	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
 	docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
