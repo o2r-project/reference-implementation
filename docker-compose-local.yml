@@ -21,11 +21,11 @@ volumes:
 
 services:
   mongodb:
-    image: mongo:3.4
+    image: mongo:3.6
     command: "--replSet rso2r"
 
   configmongodb:
-    image: mongo:3.4
+    image: mongo:3.6
     depends_on:
       - mongodb
     command: bash -c "sleep 5; mongo --verbose --host mongodb --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
@@ -41,7 +41,7 @@ services:
       - "1234:1234"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
     environment:
       - cluster.name=o2rplatform-es-cluster
       - bootstrap.memory_lock=true
@@ -53,7 +53,7 @@ services:
         hard: -1
     mem_limit: 1g
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
     environment:
       - cluster.name=o2rplatform-es-cluster
       - bootstrap.memory_lock=true
@@ -66,68 +66,90 @@ services:
         hard: -1
     mem_limit: 1g
 
+  meta:
+    image: o2r_refimpl_meta
+    build:
+      context: o2r-meta
+
+  containerit:
+    image: o2r_refimpl_containerit
+    build:
+      context: containerit
+      dockerfile: inst/docker/geospatial/Dockerfile.local
+
   muncher:
     image: o2r_refimpl_muncher
-    restart: unless-stopped
+    build:
+      context: ./o2r-muncher
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - "MUNCHER_MONGODB=mongodb://mongodb"
+      - "MUNCHER_MONGODB=mongodb://mongodb:27017/"
       - MUNCHER_PORT=8080
+      - MUNCHER_VOLUME=referenceimplementation_o2rvol
+      - MUNCHER_CONTAINER_USER=root
+      - MUNCHER_CONTAINERIT_USER=root
+      - MUNCHER_CONTAINERIT_IMAGE=o2r_refimpl_containerit
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - "MUNCHER_META_TOOL_CONTAINER=o2r_refimpl_meta"
 
   loader:
     image: o2r_refimpl_loader
-    restart: unless-stopped
+    build:
+      context: ./o2r-loader
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - "LOADER_MONGODB=mongodb://mongodb"
+      - "LOADER_MONGODB=mongodb://mongodb:27017/"
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      - "MUNCHER_META_TOOL_CONTAINER=o2r_refimpl_meta"
+      - LOADER_VOLUME=referenceimplementation_o2rvol
+      - "LOADER_META_TOOL_CONTAINER=o2r_refimpl_meta"
 
   informer:
     image: o2r_refimpl_informer
-    restart: unless-stopped
+    build:
+      context: ./o2r-informer
     depends_on:
       - configmongodb
     environment:
-      - "INFORMER_MONGODB=mongodb://mongodb"
+      - "INFORMER_MONGODB=mongodb://mongodb:27017/"
       - INFORMER_MONGODB_HOST=mongodb
       - INFORMER_PORT=8082
       - DEBUG=informer
 
   bouncer:
     image: o2r_refimpl_bouncer
-    restart: unless-stopped
+    build:
+      context: ./o2r-bouncer
     depends_on:
       - configmongodb
     environment:
-      - "BOUNCER_MONGODB=mongodb://mongodb"
+      - "BOUNCER_MONGODB=mongodb://mongodb:27017/"
       - BOUNCER_PORT=8083
       - DEBUG=bouncer
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
+      - OAUTH_STARTUP_FAIL_ON_ERROR=false
 
   finder:
     image: o2r_refimpl_finder
-    restart: unless-stopped
+    build:
+      context: ./o2r-finder
     depends_on:
       - configmongodb
       - elasticsearch
     volumes:
       - o2rvol:/tmp/o2r
     environment:
-      - "FINDER_MONGODB=mongodb://mongodb"
+      - "FINDER_MONGODB=mongodb://mongodb:27017/"
       - FINDER_PORT=8084
       - DEBUG=finder,finder:*
       - ELASTIC_SEARCH_URL=elasticsearch:9200
@@ -137,20 +159,22 @@ services:
 
   transporter:
     image: o2r_refimpl_transporter
-    restart: unless-stopped
+    build:
+      context: ./o2r-transporter
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      - "TRANSPORTER_MONGODB=mongodb://mongodb"
+      - "TRANSPORTER_MONGODB=mongodb://mongodb:27017/"
       - TRANSPORTER_PORT=8081
       - DEBUG=transporter,transporter:*
 
   shipper:
     image: o2r_refimpl_shipper
-    restart: unless-stopped
+    build:
+      context: ./o2r-shipper
     depends_on:
       - configmongodb
     volumes:
@@ -164,32 +188,46 @@ services:
 
   substituter:
     image: o2r_refimpl_substituter
-    restart: unless-stopped
+    build:
+      context: ./o2r-substituter
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
     environment:
-      - "SUBSTITUTER_MONGODB=mongodb://mongodb"
+      - "SUBSTITUTER_MONGODB=mongodb://mongodb:27017/"
       - SUBSTITUTER_PORT=8090
       - DEBUG=substituter,substituter:*
 
   inspecter:
-    image: o2rproject/o2r-inspecter:0.0.1
-    restart: unless-stopped
+    image: o2r_refimpl_inspecter
+    build:
+      context: ./o2r-inspecter
     volumes:
       - o2rvol:/tmp/o2r
     environment:
       - INSPECTER_PORT=8091
       - DEBUGME=inspecter
 
+  bindings:
+    image: o2r_refimple_bindings
+    build:
+      context: ./o2r-bindings
+    ports:
+      - "5000-5499:5000-5499"
+    volumes:
+      - o2rvol:/tmp/o2r
+    environment: 
+      - DEBUG=bindings
+
   guestlister:
     image: o2r_refimpl_guestlister
-    restart: unless-stopped
+    build:
+      context: ./o2r-guestlister
     depends_on:
       - configmongodb
     environment:
-      - "GUESTLISTER_MONGODB=mongodb://mongodb"
+      - "GUESTLISTER_MONGODB=mongodb://mongodb:27017/"
       - GUESTLISTER_PORT=8383
       - DEBUG=guestlister
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
@@ -198,6 +236,8 @@ services:
 
   platform:
     image: o2r_refimpl_platform
+    build:
+      context: ./o2r-platform
     restart: unless-stopped
 
   webserver:

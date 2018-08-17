@@ -21,11 +21,11 @@ volumes:
 
 services:
   mongodb:
-    image: mongo:3.4
+    image: mongo:3.6
     command: "--replSet rso2r"
 
   configmongodb:
-    image: mongo:3.4
+    image: mongo:3.6
     depends_on:
       - mongodb
     command: bash -c "sleep 5; mongo --verbose --host mongodb --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
@@ -41,7 +41,7 @@ services:
       - "1234:1234"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
     environment:
       - cluster.name=o2rplatform-es-cluster
       - bootstrap.memory_lock=true
@@ -55,7 +55,7 @@ services:
 #    ports:
 #      - "9200:9200"
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
     environment:
       - cluster.name=o2rplatform-es-cluster
       - bootstrap.memory_lock=true
@@ -69,71 +69,68 @@ services:
     mem_limit: 1g
 
   muncher:
-    image: o2rproject/o2r-muncher:0.17.0
-    restart: unless-stopped
+    image: o2rproject/o2r-muncher:0.21.0
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - "MUNCHER_MONGODB=mongodb://mongodb"
+      - "MUNCHER_MONGODB=mongodb://mongodb:27017/"
       - MUNCHER_PORT=8080
       - MUNCHER_VOLUME=referenceimplementation_o2rvol
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559"
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
 
   loader:
-    image: o2rproject/o2r-loader:0.10.0
-    restart: unless-stopped
+    image: o2rproject/o2r-loader:0.11.0
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - "LOADER_MONGODB=mongodb://mongodb"
+      - "LOADER_MONGODB=mongodb://mongodb:27017/"
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=referenceimplementation_o2rvol
-      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559"
+      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
 
   informer:
-    image: o2rproject/o2r-informer:0.3.0
-    restart: unless-stopped
+    image: o2rproject/o2r-informer:0.5.0
     depends_on:
       - configmongodb
     environment:
-      - "INFORMER_MONGODB=mongodb://mongodb:27017"
+      - "INFORMER_MONGODB=mongodb://mongodb:27017/"
       - INFORMER_MONGODB_HOST=mongodb
       - INFORMER_PORT=8082
-      - DEBUG=informer
+      - DEBUG=informer,informer:*
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.11.0
-    restart: unless-stopped
+    image: o2rproject/o2r-bouncer:0.12.1
     depends_on:
       - configmongodb
+      - guestlister
     environment:
-      - "BOUNCER_MONGODB=mongodb://mongodb"
+      - "BOUNCER_MONGODB=mongodb://mongodb:27017/"
       - BOUNCER_PORT=8083
-      - DEBUG=bouncer
+      - DEBUG=bouncer,bouncer:*
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
+      - OAUTH_STARTUP_FAIL_ON_ERROR=false
 
   finder:
-    image: o2rproject/o2r-finder:0.6.1
-    restart: unless-stopped
+    image: o2rproject/o2r-finder:0.6.2
     depends_on:
       - configmongodb
       - elasticsearch
     volumes:
       - o2rvol:/tmp/o2r
     environment:
-      - "FINDER_MONGODB=mongodb://mongodb"
+      - "FINDER_MONGODB=mongodb://mongodb:27017/"
       - FINDER_PORT=8084
       - DEBUG=finder,finder:*
       - ELASTIC_SEARCH_URL=elasticsearch:9200
@@ -142,21 +139,19 @@ services:
       - BATCH_COUNT=5
 
   transporter:
-    image: o2rproject/o2r-transporter:0.5.0
-    restart: unless-stopped
+    image: o2rproject/o2r-transporter:0.6.0
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      - "TRANSPORTER_MONGODB=mongodb://mongodb"
+      - "TRANSPORTER_MONGODB=mongodb://mongodb:27017/"
       - TRANSPORTER_PORT=8081
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:e7398ab
-    restart: unless-stopped
+    image: o2rproject/o2r-shipper:8f95fd6
     depends_on:
       - configmongodb
     volumes:
@@ -169,46 +164,50 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.4.3
-    restart: unless-stopped
+    image: o2rproject/o2r-substituter:0.5.0
     depends_on:
       - configmongodb
     volumes:
       - o2rvol:/tmp/o2r
     environment:
-      - "SUBSTITUTER_MONGODB=mongodb://mongodb"
+      - "SUBSTITUTER_MONGODB=mongodb://mongodb:27017/"
       - SUBSTITUTER_PORT=8090
       - DEBUG=substituter,substituter:*
 
   inspecter:
     image: o2rproject/o2r-inspecter:0.0.1
-    restart: unless-stopped
     volumes:
       - o2rvol:/tmp/o2r
     environment:
       - INSPECTER_PORT=8091
       - DEBUGME=inspecter
 
+  bindings:
+    image: o2rproject/o2r-bindings:0.0.1
+    ports:
+      - "5000-5499:5000-5499"
+    volumes:
+      - o2rvol:/tmp/o2r
+    environment: 
+      - DEBUG=bindings
+
   guestlister:
     image: o2rproject/o2r-guestlister:0.2.1
-    restart: unless-stopped
     depends_on:
       - configmongodb
     environment:
-      - "GUESTLISTER_MONGODB=mongodb://mongodb"
+      - "GUESTLISTER_MONGODB=mongodb://mongodb:27017/"
       - GUESTLISTER_PORT=8383
-      - DEBUG=guestlister
+      - DEBUG=guestlister,guestlister:*
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
 
   platform:
-    image: o2rproject/o2r-platform:1.0.0
-    restart: unless-stopped
+    image: o2rproject/o2r-platform:1.0.2
 
   webserver:
     image: nginx:latest
-    restart: unless-stopped
     depends_on:
       - bouncer
       - finder
@@ -220,6 +219,7 @@ services:
       - shipper
       - substituter
       - guestlister
+      - bindings
     volumes:
       - "./etc/nginx.conf:/etc/nginx/nginx.conf:ro"
     ports:
