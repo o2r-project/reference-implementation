@@ -42,25 +42,10 @@ local_down_volume:
 local: update local_build local_up
 
 local_versions:
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bouncer 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_finder 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_informer 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_inspecter 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_loader 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_meta 		 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_muncher 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_platform 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.vcs-ref"}}' o2r_refimpl_shipper 	 ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_substituter ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_transporter ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_guestlister ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bindings    ;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_containerit ;
+	etc/local_versions.sh
 
-hub: hub_images hub_versions hub_up
-
-hub_down_volume:
-	docker-compose down --volume;
+local_versions_save: local_versions
+	make local_versions >> versions.txt
 
 hub_images:
 	# pull ":latest" images so that we don't need to update versions here as well
@@ -139,6 +124,10 @@ local_save_images:
 create_archive:
 	zip -r -q o2r-reference-implementation-modules.zip software;
 	zip -r -q o2r-docs.zip api/ architecture/ erc-examples/ erc-spec/;
+
+versions:
+	git --version;
+	docker --version;
 
 reproduce:
 	# TODO import images from files
