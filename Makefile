@@ -46,6 +46,7 @@ local_versions:
 	etc/local_versions.sh
 
 local_versions_save: local_versions
+	rm -f versions.txt
 	make local_versions >> versions.txt
 
 hub_images:
@@ -64,9 +65,6 @@ hub_images:
 	docker pull o2rproject/o2r-guestlister;
 	docker pull o2rproject/o2r-bindings;
 
-hub_up:
-	docker-compose up;
-
 hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	   o2rproject/o2r-bouncer;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	    o2rproject/o2r-finder;
@@ -83,8 +81,16 @@ hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-bindings;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'       o2rproject/containerit;
 
-clean: hub_down_volume local_down_volume
-	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
+hub_up:
+	docker-compose up;
+
+hub: hub_images hub_versions hub_up
+
+hub_down_volume:
+	docker-compose down --volume;
+
+hub_clean: hub_down_volume
+	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm --force
 	docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
 build_documentation:
