@@ -112,8 +112,33 @@ build_documentation:
 	mv api-spec/*.pdf .
 	echo "ERC, architecture, and web API documentation created, see files PDF files in the project root directory"
 
-release: update build_documentation
-	# TODO build all images, export them to files
+local_save_images:
+	docker save \
+	mongo:3.6 \
+	adicom/admin-mongo:latest \
+	docker.elastic.co/elasticsearch/elasticsearch:5.6.10 \
+	o2r_refimpl_containerit \
+	o2r_refimpl_muncher \
+	o2r_refimpl_loader \
+	o2r_refimpl_informer \
+	o2r_refimpl_bouncer \
+	o2r_refimpl_finder \
+	o2r_refimpl_transporter \
+	o2r_refimpl_shipper \
+	o2r_refimpl_substituter \
+	o2r_refimpl_inspecter \
+	o2r_refimpl_bindings \
+	o2r_refimpl_guestlister \
+	o2r_refimpl_platform \
+	nginx:latest | gzip -c > o2r-reference-implementation-images.tar.gz;
+	tar -tvf o2r-reference-implementation-images.tar.gz;
+	ls -sh o2r-reference-implementation-images.tar.gz;
+	@echo "Inspecting tarball manifest:";
+	tar -xf o2r-reference-implementation-images.tar.gz manifest.json -O | python -m json.tool;
+
+create_archive:
+	zip -r -q o2r-reference-implementation-modules.zip software;
+	zip -r -q o2r-docs.zip api/ architecture/ erc-examples/ erc-spec/;
 
 reproduce:
 	# TODO import images from files
