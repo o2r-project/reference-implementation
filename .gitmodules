@@ -22,9 +22,9 @@
 [submodule "o2r-platform"]
 	path = o2r-platform
 	url = https://github.com/o2r-project/o2r-platform
-[submodule "o2r-web-api"]
+[submodule "api"]
 	path = api
-	url = https://github.com/o2r-project/o2r-web-api
+	url = https://github.com/o2r-project/api
 [submodule "erc-spec"]
 	path = erc-spec
 	url = https://github.com/o2r-project/erc-spec
