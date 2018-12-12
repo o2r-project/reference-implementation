@@ -210,7 +210,7 @@ services:
       - DEBUGME=inspecter
 
   bindings:
-    image: o2r_refimple_bindings
+    image: o2r_refimpl_bindings
     build:
       context: ./o2r-bindings
     ports:
