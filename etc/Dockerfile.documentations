@@ -2,7 +2,7 @@
 # A Dockerfile for an environment to build the documentation contained in this repository
 #
 
-FROM rocker/verse
+FROM rocker/verse:3.4.4
 
 # System dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -20,10 +20,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN wget https://github.com/jgm/pandoc/releases/download/2.1.1/pandoc-2.1.1-linux.tar.gz \
   && tar -xvzf pandoc*.tar.gz --strip-components 1 -C /usr/local/
 
-RUN tlmgr init-usertree \
+RUN tlmgr update --self \
+  && tlmgr init-usertree \
   && tlmgr install xcolor mdframed needspace
 RUN pip3 install --upgrade pip \
-  && pip3 install \
+  && python3 -m pip install \
   mkdocs \
   pymdown-extensions \
   mkdocs-pandoc \
@@ -31,7 +32,7 @@ RUN pip3 install --upgrade pip \
   git+https://github.com/o2r-project/mkdocs-combine.git
 
 # architecture, see architecture/.travis.yml
-RUN pip3 install mkdocs mkdocs-cinder markdown-include
+RUN python3 -m pip install mkdocs mkdocs-cinder markdown-include
 RUN apt-get update && apt-get install -y --no-install-recommends \
   xfonts-base xfonts-75dpi
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
