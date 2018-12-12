@@ -184,9 +184,11 @@ docker volume inspect reference-implementation_o2r_test_storage
 ## Read documentation
 
 This repository also contains specification and documentation projects.
-These documentations are created in Markdown format and can be rendered to HTML and PDF documents using the make target `build_documentation`, which relies on a local `Dockerfile` for the rendering runtime environment.
-The PDF files are moved to the project root directory.
+These documentations are created in Markdown format and can be rendered to HTML and PDF documents using the make target `build_documentation`, which relies on a local `Dockerfile` for the rendering environment.
+The PDF files are available to the project root directory.
 The HTML files can be found in the respective projects in the `site` directory.
+
+If the `local` configuration is used and the documentation was build, or if you [reproduce](#reproduce) you can also browse it at http://localhost/docs/.
 
 ## Reproducibility
 

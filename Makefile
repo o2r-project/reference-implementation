@@ -90,8 +90,9 @@ clean: hub_down_volume local_down_volume
 build_documentation:
 	rm -f *.pdf
 	docker build --tag docbuilder --file etc/Dockerfile.documentations .
+	@echo $(CURDIR)
 	docker run -it -v $(CURDIR)/architecture:/doc:rw docbuilder make build pdf 
-	docker run -it -v $(CURDIR)/api-spec:/doc:rw docbuilder make build pdf 
+	docker run -it -v $(CURDIR)/api:/doc:rw docbuilder make build pdf 
 	docker run -it -v $(CURDIR)/erc-spec:/doc:rw docbuilder make build pdf_tinytex
 	mv architecture/site/*.pdf .
 	mv erc-spec/*.pdf .
