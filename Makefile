@@ -27,6 +27,9 @@ update:
 	git submodule update --init --recursive --remote
 	git submodule foreach git pull origin master
 
+local_build:
+	docker-compose --file docker-compose-local.yml build;
+
 local_up:
 	docker-compose --file docker-compose-local.yml up;
 
@@ -36,7 +39,7 @@ local_down:
 local_down_volume:
 	docker-compose --file docker-compose-local.yml down --volume;
 
-local: local_up
+local: update local_build local_up
 
 local_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}:	{{index .Config.Labels "org.label-schema.version"}}' o2r_refimpl_bouncer 	 ;
