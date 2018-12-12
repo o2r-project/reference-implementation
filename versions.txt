@@ -1,0 +1,23 @@
+make[1]: Entering directory '/home/daniel/git/o2r/reference-implementation'
+etc/local_versions.sh
+api/ e9bb2b86ecd8fa23dde9a109284dd3506d243184
+architecture/ eaf33f2aa4c5af7dbcdd3de95a9d4196f64da64b
+containerit/ 0.5.0.9003 fb107e2979c48b69336f7019f991f9e6f9900757
+erc-checker/ 1.2.0 fb1ed1617464b862404dc18c3641678543bca470
+erc-examples/ d5892550b2d68e858f006e4867de4fae5cc76a11
+erc-spec/ a112fd85b26a4659997ac2463ec0aff7315ebd22
+o2r-bindings/ 0.0.1 f68e17d12dc7573bd7c6b927d444ef35b09f14fc
+o2r-bouncer/ 0.12.2 6bc703decd3d5dfc49e7935a37da625dd0921c94
+o2r-finder/ 0.6.3 97029b6322223e5e4677e03f41d2b1b375634f5c
+o2r-guestlister/ 0.2.2 fe351833fa05455b99b5644d26c944ae6500309f
+o2r-informer/ 0.5.0 cd507af98a12c2544148145c2cffe07853d909f7
+o2r-inspecter/ 0.0.1 ee5e86ada517972b246f8297ddb8b43580e3eac1
+o2r-loader/ 0.11.0 d83498b8d71be6999e8ff2e3a8c13c6574de11a9
+o2r-meta/ f79cc1f838ce8a6151cd10967e497b4c9040e79d
+o2r-muncher/ 0.21.1 c68b4d369a52082ef764b0d576c7964258e0fd63
+o2r-platform/ 1.0.2 f7075b9be074dee841ab9cced667af6c66eadc3e
+o2r-shipper/ 8f95fd6cc2c2071658ddcefa3457390207ff5ffc
+o2r-substituter/ 0.5.0 1d5be501c9c2c2a6821ab1caff0c14e4320952dd
+o2r-transporter/ 0.6.0 ed9f8be91d7195c3fe14b565d1b51505f963c17c
+. (reference-implementation) 71c5a8184bf0c0cbb232de563eefd7c3b27fb2c3
+make[1]: Leaving directory '/home/daniel/git/o2r/reference-implementation'

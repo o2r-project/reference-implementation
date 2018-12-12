@@ -25,7 +25,8 @@ init:
 update:
 	git pull --recurse-submodules
 	git submodule update --init --recursive --remote
-	git submodule foreach git pull origin master
+	git submodule foreach --recursive git checkout master
+	git submodule foreach --recursive git pull origin master
 
 local_build:
 	docker-compose --file docker-compose-local.yml build;
