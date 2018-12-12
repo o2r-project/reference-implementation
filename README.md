@@ -1,23 +1,33 @@
 # o2r reference implementation
 
-A catch-all repository to run all [o2r](http://o2r.info) microservices and the user interface platform.
+A catch-all repository to run all [o2r](https://o2r.info) microservices and the user interface platform which together form the [o2r prototype for a reproducibility service and publishing system](https://o2r.info/results).
+
+In the remainder of this document, specifications or projects are referenced with their code repository, even if a user-friendly online HTML rending exists, e.g.  https://github.com/o2r-project/erc-spec/ instead of  https://o2r.info/erc-spec/.
+Please check the code repository metadata or respective README files for documentation that is easier to read or browse.
 
 ## Run o2r platform and reproducibility service
+
+### tl;dr
+
+To quickly get the reference implementation running locally, you can use the ready-to-use images from Docker Hub:
+
+```bash
+make hub
+```
 
 ### Basics
 
 The o2r reference implementation realises a workflow for publishing reproducible articles using the [Executable Research Compendium](https://github.com/o2r-project/erc-spec) (ERC) and has two broad components: a user interface for demonstrating novel interactions with ERC, a.k.a. the "platform", and a side collection of microservices implementing the [o2r Web API](https://github.com/o2r-project/o2r-web-api), a.k.a. the "reproducibility service".
 
-For more information on the architecture and the microservices see [o2r Software Architecture](https://github.com/o2r-project/architecture).
+For more information on the architecture and the microservices see [o2r System Architecture](https://github.com/o2r-project/architecture).
 
 ### Contents
 
-All of the mentioned documentation and software is available in this project.
-The documentation is also available online for reading, though availability may change.
+All of the software, specification and documentation for the o2r system are available nested in this project.
 
-| Component | directory | online |
+| **Component** | **Directory | **Online** |
 | ------ | ------ | ------ |
-| ERC specification (document) | `erc-spec` | https://o2r.info/erc-spec/ |
+| ERC specification (document) | `erc-spec` | https://github.com/o2r-project/erc-spec/ |
 | Web API specification (document) | `api` | https://github.com/o2r-project/api |
 | Architecture specification (document) | `architecture` | https://github.com/o2r-project/architecture |
 | ERC checker (library/tool) | `erc-checker` | https://github.com/o2r-project/erc-checker/ |
@@ -38,8 +48,9 @@ The documentation is also available online for reading, though availability may 
 
 This project contains configurations and scripts to make running the o2r reference implementation as easy as possible.
 
-The project uses [`make`](https://www.gnu.org/software/make/), which helps simplifying the execution of the various steps necessary to run your own o2r-platform into a simple set of commands. 
+The project uses [`make`](https://www.gnu.org/software/make/), which helps simplifying the execution of the various steps necessary to run the reference implementation into a set of console commands. 
 These commands are formulated in the `Makefile` included in this project.
+If `make` is not available, you can execute the respective commands manually.
 
 The commands in _this file_ (`README.md`) assume a Unix shell and related common tools, so they work on a recent installation of Linux or MacOS X.
 
@@ -73,7 +84,7 @@ Run `make update` or the respective commands on your operating system to initial
 
 By default, the reference implementation uses the offline OAuth2 implementation provided by the [o2r-guestlister](https://github.com/o2r-project/o2r-guestlister).
 
-This allows access to the o2r platform by selecting one of three demo users. The users represent different user roles with different levels, i.e. an admin (level 1000), an editor (level 500) and a basic author (level 100).
+This allows access to the o2r platform by selecting one of three demo users. The users represent different user roles with different levels, i.e. an admin (level `1000`), an editor (level `500`) and a basic author (level `100`).
 
 ##### ORCID (optional)
 
@@ -113,32 +124,46 @@ You can find instructions for all hosts (including Docker Toolbox) in the [Elast
 
 ### Build images from source and run
 
-This repository already includes a `.gitmodules` file, which lists all required o2r microservices as git submodules. 
+This repository already includes a `.gitmodules` file, which lists all required o2r microservices and tools as git submodules. 
 To download all o2r source code at once, navigate to the `reference-implementation` base directory and use
 
 ```bash
 make update
 ```
 
-Once all repositories have been pulled successfully, build Docker images of the microservices and run them in containers by executing:
+Once all repositories have been pulled successfully, build Docker images of the microservices and tools:
+
+```bash
+make local_build
+```
+
+Then run the microservices and platform in containers:
+
+```bash
+make local_up
+```
+
+Wait until the log shows no new messages for a few seconds, then open **http://localhost** and continue in section ["Load data"](#load-data).
+
+The above three steps can also be executed with a single target:
 
 ```bash
 make local
 ```
 
-Wait until the log shows no new messages, then open **http://localhost** and continue in section ["Use platform"](#use-platform).
-
 ### Download images and run
 
-[Docker Hub](https://hub.docker.com/) is a repository for Docker images.
-All o2r software projects have automatic builds [available on Docker Hub](https://hub.docker.com/r/o2rproject/).
-The following command executes a `docker-compose` command to pull and run these images.
+[Docker Hub](https://hub.docker.com/) is a [public registry](https://en.wikipedia.org/wiki/Docker_(software)#Components) for Docker images.
+All o2r software projects are automatically built [on Docker Hub](https://hub.docker.com/r/o2rproject/) when there is a new version uploaded to the code repository.
+The images have tags corresponding to the software version (as specific e.g. in a `package.json` for a Node.js-based microservice).
+
+The following target pulls the latest images, prints the versions to the terminal, and executes a `docker-compose` command to run the reference implementation:
 
 ```bash
 make hub
 ```
 
-Wait until the log shows no new messages, then open **http://localhost** and continue in section ["Use platform"](#use-platform).
+Wait until the log shows no new messages for a few seconds, then open **http://localhost** and continue in section ["Load data"](#load-data).
 
 ### Load data
 
@@ -192,42 +217,66 @@ If the `local` configuration is used and the documentation was build, or if you 
 
 ## Reproducibility
 
-This repository serves the goal to make the developments of the o2r project reproducible, not only by running the reference implementation (see above) but also by creating an archivable package of the software.
+### Rationale
+
+This repository serves the goal to make the developments of the o2r project reproducible, not only by running the reference implementation (see above) but also by creating an archivable package of the software in a reproducible (i.e. scripted) way.
 As the implementations component are spread over multiple git repositories, we cannot rely on the direct export of a GitHub release to Zenodo.
-This repository imports all relevant software projects as [git submodules](https://git-scm.com/docs/git-submodule) and manually creates a release package.
-
-**TBD**
-
-- clone repo
-- build all images
-- export all image
-- create make target to load all images and run these
-- create huge zip
-- publish to Zenodo (with make target)
+This repository captures all software projects to create a release package, which can be uploaded to a data repository manually.
 
 ### Known limitations
 
-- Nested code projects are currently installed from GitHub during the building of Docker images ((see also [#1]()).
+- Nested code projects are currently installed from GitHub during the building of Docker images ((see also [#1](#1)).
   - `o2r-muncher`'s Docker image contains `o2r-meta` and `erc-checker`
   - `o2r-loaders`'s Docker image contains `o2r-meta`
 - The used Docker base images and dependencies for the services, such as npm or pip packages, must be available online in the required version to build the images locally. See project files such as `package.json` or `requirements.txt` for a full list of dependencies.
+- The locally built images do not have a proper version tag but instead are `latest`, since they are build as part of the `docker-compose` configuration. Note that you can easily distinguish images by this, too: The hub images will always have a specific version tag.
 
 ### Create package
 
-**TODO**
+The creation of the reproducibility package consists of the following steps and is relies where possible on Makefile targets.
+The package uses the remote images from Docker Hub at the time of creation
 
+1. Clone the `reference-implementation` repository to an empty directory: `git clone https://github.com/o2r-project/reference-implementation.git`
+1. Create the package with `make release`, which...
+  - cleans up potentially existing artifacts (`make local_clean`),
+  - prints software versions (`make versions`),
+  - updates the nested projects (`make update`),
+  - builds all documentation locally (`make build_documentation`),
+  - save local version information of software and repositories to single file `versions.txt` (`make local_versions_save`),
+  - builds all images locally (see [limitations](#known-limitations), `make local_build`),
+  - saves the just built images into the file `o2r-reference-implementation-images.tar` (`make local_save_images`),
+  - saves all nested code repositories with their histories, to `o2r-reference-implementation-modules.zip`
+  - saves all nested documentation repositories with their histories, to `o2r-docs.zip`
+1. Create a new deposit or a new version of the existing deposit on Zenodo
+1. Upload the files to Zenodo deposit: `ZENODO_DEPOSIT_ID=2203844 ZENODO_ACCESS_TOKEN=xxxxxx make upload_deposit`
+1. Fill out metadata form on Zenodo and publish using the "Publish" button
+
+### Reproduce
+
+The reproduction consists of three steps, assuming the local images do not exist on the machine used:
+
+1. Download the saved images from Zenodo
+1. Load the saved images from the tarball
+1. Run the `docker-compose` configuration without building the images (to ensure the loaded ones are used)
+
+The last two steps can be executed with
 
 ```bash
-make show_microservices_versions >> dist/versions.txt
+make reproduce
 ```
 
-### Archival to Zenodo
+Wait until the log shows no new messages for a few seconds, then open **http://localhost** and continue see section ["Load data"](#load-data) for creating ERCs.
 
-**TODO**
+You can stop all containers and clean up local images with
 
+```bash
+make local_down
+# to also delete local storage use make local_down_volumes
+make local_clean
+```
 
 ## License
 
-This project is licensed under Apache License, Version 2.0, see file LICENSE. Copyright © 2017 - o2r project.
+This project is licensed under Apache License, Version 2.0, see file LICENSE. Copyright © 2018 - o2r project.
 
-All included software projects have their own LICENSE files, see `o2r-<component name>/LICENSE`.
+All included software projects have their own LICENSE files, see `<component name>/LICENSE`.

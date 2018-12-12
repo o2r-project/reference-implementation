@@ -93,6 +93,11 @@ hub_clean: hub_down_volume
 	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm --force
 	docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
+local_clean: local_down_volume
+	rm -f *.tar;
+	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm --force
+	docker images | grep o2r_refimpl | awk '{print $3}' | xargs docker rmi --force
+
 build_documentation:
 	rm -f *.pdf
 	docker build --tag docbuilder --file etc/Dockerfile.documentations .
@@ -136,6 +141,8 @@ create_archive:
 versions:
 	git --version;
 	docker --version;
+
+release: versions update build_documentation local_versions local_build local_save_images create_archive
 
 reproduce:
 	# TODO import images from files
