@@ -1,7 +1,5 @@
 *.pdf
 
-o2r-reference-implementation-modules\.zip
-
-o2r-reference-implementation-images\.tar\.gz
-
+o2r-reference-implementation*\.tar\.gz
+o2r-reference-implementation*\.zip
 o2r-docs\.zip

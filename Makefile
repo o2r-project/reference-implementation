@@ -94,7 +94,6 @@ hub_clean: hub_down_volume
 	docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
 local_clean: local_down_volume
-	rm -f *.tar;
 	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm --force
 	docker images | grep o2r_refimpl | awk '{print $3}' | xargs docker rmi --force
 
@@ -108,7 +107,7 @@ build_documentation:
 	mv architecture/site/*.pdf .
 	mv erc-spec/*.pdf .
 	mv api-spec/*.pdf .
-	echo "ERC, architecture, and web API documentation created, see files PDF files in the project root directory"
+	@echo "ERC, architecture, and web API documentation created, see files PDF files in the project root directory"
 
 local_save_images:
 	docker save \
@@ -116,6 +115,7 @@ local_save_images:
 	adicom/admin-mongo:latest \
 	docker.elastic.co/elasticsearch/elasticsearch:5.6.10 \
 	o2r_refimpl_containerit \
+	o2r_refimpl_meta \
 	o2r_refimpl_muncher \
 	o2r_refimpl_loader \
 	o2r_refimpl_informer \
@@ -128,22 +128,30 @@ local_save_images:
 	o2r_refimpl_bindings \
 	o2r_refimpl_guestlister \
 	o2r_refimpl_platform \
-	nginx:latest | gzip -c > o2r-reference-implementation-images.tar.gz;
-	tar -tvf o2r-reference-implementation-images.tar.gz;
-	ls -sh o2r-reference-implementation-images.tar.gz;
-	@echo "Inspecting tarball manifest:";
-	tar -xf o2r-reference-implementation-images.tar.gz manifest.json -O | python -m json.tool;
+	nginx:latest | pigz --stdout --fast > o2r-reference-implementation-images.tar.gz;
+	ls -1sh o2r-reference-implementation-images*.tar.gz;
+
+#@echo "Inspect tarball manifests with";
+#tar -xf o2r-reference-implementation-images.tar.gz manifest.json -O | python -m json.tool;
 
 create_archive:
-	zip -r -q o2r-reference-implementation-modules.zip software;
+	zip -r -q o2r-reference-implementation-modules.zip containerit/ erc-checker/ o2r-*/;
 	zip -r -q o2r-docs.zip api/ architecture/ erc-examples/ erc-spec/;
+	zip -r -q o2r-reference-implementation-files.zip etc/ README*.md docker-compose*.yml versions.txt;
 
 versions:
 	git --version;
 	docker --version;
 
+release_clean:
+	rm -f *.zip
+	rm -f *.tar;
+
 release: versions update build_documentation local_versions local_build local_save_images create_archive
 
+upload_files_to_zenodo:
+	python etc/zenodo_upload.py
+	
 reproduce:
 	# TODO import images from files
 	# run make local

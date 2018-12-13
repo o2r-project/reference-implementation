@@ -248,7 +248,8 @@ The package uses the remote images from Docker Hub at the time of creation
   - saves all nested code repositories with their histories, to `o2r-reference-implementation-modules.zip`
   - saves all nested documentation repositories with their histories, to `o2r-docs.zip`
 1. Create a new deposit or a new version of the existing deposit on Zenodo
-1. Upload the files to Zenodo deposit: `ZENODO_DEPOSIT_ID=2203844 ZENODO_ACCESS_TOKEN=xxxxxx make upload_deposit`
+1. Upload the _small files_ to [Zenodo deposit](https://zenodo.org/api/deposit/depositions/2203844): `ZENODO_DEPOSIT_ID=2203844 ZENODO_ACCESS_TOKEN=xxxxxx make upload_files_to_zenodo` (the used Python scripts needs the module `humanfriendly`)
+1. Manually upload the _big file_ to Zenodo deposit ([Zenodo API currently has a 100 MB file limit](http://developers.zenodo.org/#deposition-files))
 1. Fill out metadata form on Zenodo and publish using the "Publish" button
 
 ### Reproduce
