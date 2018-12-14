@@ -139,8 +139,14 @@ create_archive:
 	zip -r -q o2r-reference-implementation-files.zip etc/ README*.md docker-compose*.yml versions.txt;
 
 versions:
+	make --version;
 	git --version;
 	docker --version;
+	docker-compose --version;
+	pigz --version;
+	python --version;
+	unzip --help | head -1;
+	zip --help | head -2 | tail -1;
 
 release_clean:
 	rm -f *.zip
