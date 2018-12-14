@@ -85,7 +85,7 @@ services:
       - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
 
   loader:
-    image: o2rproject/o2r-loader:0.11.0
+    image: o2rproject/o2r-loader:0.12.0
     depends_on:
       - configmongodb
     volumes:
@@ -109,7 +109,7 @@ services:
       - DEBUG=informer,informer:*
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.12.1
+    image: o2rproject/o2r-bouncer:0.13.0
     depends_on:
       - configmongodb
       - guestlister
