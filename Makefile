@@ -90,12 +90,12 @@ hub_down_volume:
 	docker-compose down --volume;
 
 hub_clean: hub_down_volume
-	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm --force
-	docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
+	docker ps -a | grep o2r | awk '{print $$1}' | xargs sh -c "docker rm --force || true"
+	docker images | grep o2r | awk '{print $$3}' | xargs sh -c "docker rmi --force || true"
 
 local_clean: local_down_volume
-	docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm --force
-	docker images | grep o2r_refimpl | awk '{print $3}' | xargs docker rmi --force
+	docker ps -a | grep o2r | awk '{print $$1}' | xargs sh -c "docker rm --force || true"
+	docker images | grep o2r_refimpl | awk '{print $$3}' | xargs sh -c "docker rmi --force || true"
 
 build_documentation:
 	rm -f *.pdf
