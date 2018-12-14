@@ -240,22 +240,24 @@ This repository captures all software projects to create a reproduction package,
 
 ### Create package
 
-The creation of the reproducibility package consists of the following steps and is relies where possible on Makefile targets.
-The package uses the remote images from Docker Hub at the time of creation
+The creation of the reproducibility package consists of the following steps and relies on `Makefile` targets where possible (see brackets `(make ...)`).
+The package uses the locally built images.
 
 1. Clone the `reference-implementation` repository to an empty directory: `git clone https://github.com/o2r-project/reference-implementation.git`
-1. Create the package with `make release`, which...
-  - cleans up potentially existing artifacts (`make local_clean`),
-  - prints software versions (`make versions`),
+1. Create the package with `make package`, which...
+  - cleans up existing artifacts (`make package_clean local_clean`),
+  - prints _used_ software versions (git, Docker etc., `make versions`),
   - updates the nested projects (`make update`),
   - builds all documentation locally (`make build_documentation`),
-  - save local version information of software and repositories to single file `versions.txt` (`make local_versions_save`),
+  - saves local version information of software and repositories to single file `versions.txt` (`make local_versions_save`),
   - builds all images locally (see [limitations](#known-limitations), `make local_build`),
   - saves the just built images into the file `o2r-reference-implementation-images.tar` (`make local_save_images`),
-  - saves all nested code repositories with their histories, to `o2r-reference-implementation-modules.zip`
-  - saves all nested documentation repositories with their histories, to `o2r-docs.zip`
+  - saves all nested repositories (including their histories)
+    - reference implementation software to `o2r-reference-implementation-modules.zip`
+    - documentation to `o2r-docs.zip`
+    - reproduction package files (everything except `README` files and `Makefile`) to `o2r-reference-implementation-files.zip`
 1. Create a new deposit or a new version of the existing deposit on Zenodo
-1. Upload the _small files_ to [Zenodo deposit](https://zenodo.org/api/deposit/depositions/2203844): `ZENODO_DEPOSIT_ID=2203844 ZENODO_ACCESS_TOKEN=xxxxxx make upload_files_to_zenodo` (the used Python scripts needs the module `humanfriendly`)
+1. Upload the _small files_ to the just created Zenodo deposit ([first version](https://zenodo.org/api/deposit/depositions/2203844), the used Python scripts needs the module `humanfriendly`; `ZENODO_DEPOSIT_ID=xxxxxx ZENODO_ACCESS_TOKEN=xxxxxx make upload_files_to_zenodo`)
 1. Manually upload the _big file_ to Zenodo deposit ([Zenodo API currently has a 100 MB file limit](http://developers.zenodo.org/#deposition-files))
 1. Fill out metadata form on Zenodo and publish using the "Publish" button
 

@@ -132,11 +132,11 @@ local_save_images:
 
 #@echo "Inspect tarball manifests with";
 #tar -xf o2r-reference-implementation-images.tar.gz manifest.json -O | python -m json.tool;
-
-create_archive:
+	
+create_archives:
 	zip -r -q o2r-reference-implementation-modules.zip containerit/ erc-checker/ o2r-*/;
 	zip -r -q o2r-docs.zip api/ architecture/ erc-examples/ erc-spec/;
-	zip -r -q o2r-reference-implementation-files.zip etc/ README*.md docker-compose*.yml versions.txt;
+	zip -r -q o2r-reference-implementation-files.zip etc/ .env docker-compose*.yml LICENSE versions.txt;
 
 versions:
 	make --version;
