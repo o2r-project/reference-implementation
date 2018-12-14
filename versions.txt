@@ -1,8 +1,8 @@
 make[1]: Entering directory '/home/daniel/git/o2r/reference-implementation'
 etc/local_versions.sh
-api/ e9bb2b86ecd8fa23dde9a109284dd3506d243184
-architecture/ eaf33f2aa4c5af7dbcdd3de95a9d4196f64da64b
-containerit/ 0.5.0.9003 fb107e2979c48b69336f7019f991f9e6f9900757
+api/ 8d75e2ff1847073b8bc9025bc901e9a2e2cb9b3f
+architecture/ 00756bca5b3a69ce4267149dead6f57d08a4bfce
+containerit/ 0.5.0.9004 07452318e0768cea858b74dad2f1e5594dcb2926
 erc-checker/ 1.2.0 fb1ed1617464b862404dc18c3641678543bca470
 erc-examples/ d5892550b2d68e858f006e4867de4fae5cc76a11
 erc-spec/ a112fd85b26a4659997ac2463ec0aff7315ebd22
@@ -19,5 +19,5 @@ o2r-platform/ 1.0.2 f7075b9be074dee841ab9cced667af6c66eadc3e
 o2r-shipper/ 8f95fd6cc2c2071658ddcefa3457390207ff5ffc
 o2r-substituter/ 0.5.0 1d5be501c9c2c2a6821ab1caff0c14e4320952dd
 o2r-transporter/ 0.6.0 ed9f8be91d7195c3fe14b565d1b51505f963c17c
-. (reference-implementation) 71c5a8184bf0c0cbb232de563eefd7c3b27fb2c3
+. (reference-implementation) 06898083b0e443c55926077aa2dbd1d4c146b197
 make[1]: Leaving directory '/home/daniel/git/o2r/reference-implementation'
