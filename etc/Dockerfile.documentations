@@ -20,23 +20,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN wget https://github.com/jgm/pandoc/releases/download/2.1.1/pandoc-2.1.1-linux.tar.gz \
   && tar -xvzf pandoc*.tar.gz --strip-components 1 -C /usr/local/
 
-RUN tlmgr update --self \
-  && tlmgr init-usertree \
-  && tlmgr install xcolor mdframed needspace
-RUN pip3 install --upgrade pip \
-  && python3 -m pip install \
-  mkdocs \
-  pymdown-extensions \
-  mkdocs-pandoc \
-  pandoc-latex-admonition \
-  git+https://github.com/o2r-project/mkdocs-combine.git
-
-# architecture, see architecture/.travis.yml
-RUN python3 -m pip install mkdocs mkdocs-cinder markdown-include
+# install required tools, see architecture/.travis.yml and erc-spec/.travis.yml
+RUN pip3 install --upgrade pip
+RUN python3 -m pip install \
+    mkdocs \
+    pygments \
+    mkdocs-cinder \
+    mkdocs-pandoc \
+    markdown-include \
+    pymdown-extensions \
+    pandoc-latex-admonition \
+    git+https://github.com/o2r-project/mkdocs-combine.git
 RUN apt-get update && apt-get install -y --no-install-recommends \
   xfonts-base xfonts-75dpi
 RUN wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb \
   && dpkg -i wkhtmltox_0.12.5-1.stretch_amd64.deb
+RUN R --quiet -e 'tinytex::tlmgr_install(pkgs=c("xcolor", "mdframed", "mdwtools", "needspace", "unicode-math", "filehook", "lm-math"))'
 
 VOLUME /doc
 WORKDIR /doc

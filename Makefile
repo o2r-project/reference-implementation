@@ -99,14 +99,13 @@ local_clean: local_down_volume
 
 build_documentation:
 	rm -f *.pdf
-	docker build --tag docbuilder --file etc/Dockerfile.documentations .
-	@echo $(CURDIR)
-	docker run -it -v $(CURDIR)/architecture:/doc:rw docbuilder make build pdf 
-	docker run -it -v $(CURDIR)/api:/doc:rw docbuilder make build pdf 
-	docker run -it -v $(CURDIR)/erc-spec:/doc:rw docbuilder make build pdf_tinytex
-	mv architecture/site/*.pdf .
-	mv erc-spec/*.pdf .
-	mv api-spec/*.pdf .
+	docker build --tag o2r_refimpl_docbuilder --file etc/Dockerfile.documentations .
+	docker run -it -v $(CURDIR)/architecture:/doc:rw o2r_refimpl_docbuilder make build pdf 
+	docker run -it -v $(CURDIR)/api:/doc:rw o2r_refimpl_docbuilder make build pdf 
+	docker run -it -v $(CURDIR)/erc-spec:/doc:rw o2r_refimpl_docbuilder make build travis_pdf
+	mv architecture/site/o2r-architecture.pdf .
+	mv erc-spec/site/erc-spec.pdf .
+	mv api/o2r-web-api.pdf .
 	@echo "ERC, architecture, and web API documentation created, see files PDF files in the project root directory"
 
 local_save_images:
