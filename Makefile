@@ -148,11 +148,19 @@ versions:
 	unzip --help | head -1;
 	zip --help | head -2 | tail -1;
 
-release_clean:
+package_clean:
 	rm -f *.zip
 	rm -f *.tar;
 
-release: versions update build_documentation local_versions local_build local_save_images create_archive
+package: package_clean \
+	local_clean \
+	versions \
+	update \
+	build_documentation \
+	local_versions_save \
+	local_build \
+	local_save_images \
+	create_archives
 
 upload_files_to_zenodo:
 	python etc/zenodo_upload.py

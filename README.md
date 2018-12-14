@@ -9,11 +9,15 @@ Please check the code repository metadata or respective README files for documen
 
 ### tl;dr
 
-To quickly get the reference implementation running locally, you can use the ready-to-use images from Docker Hub:
+To quickly get the reference implementation running locally, you can use the ready-to-use images from Docker Hub with
 
 ```bash
+git clone https://github.com/o2r-project/reference-implementation.git
+cd reference-implemenation
 make hub
 ```
+
+or jump ahead the the section [Reproduce](#reproduce) to use the archived reproduction package.
 
 ### Basics
 
@@ -48,7 +52,7 @@ All of the software, specification and documentation for the o2r system are avai
 
 This project contains configurations and scripts to make running the o2r reference implementation as easy as possible.
 
-The project uses [`make`](https://www.gnu.org/software/make/), which helps simplifying the execution of the various steps necessary to run the reference implementation into a set of console commands. 
+The project uses [`make`](https://www.gnu.org/software/make/), which helps simplifying the execution of the various steps necessary to run the reference implementation into a set of console commands.
 These commands are formulated in the `Makefile` included in this project.
 If `make` is not available, you can execute the respective commands manually.
 
@@ -84,7 +88,8 @@ Run `make update` or the respective commands on your operating system to initial
 
 By default, the reference implementation uses the offline OAuth2 implementation provided by the [o2r-guestlister](https://github.com/o2r-project/o2r-guestlister).
 
-This allows access to the o2r platform by selecting one of three demo users. The users represent different user roles with different levels, i.e. an admin (level `1000`), an editor (level `500`) and a basic author (level `100`).
+This allows access to the o2r platform by selecting one of three demo users.
+The users represent different user roles with different levels, i.e. an admin (level `1000`), an editor (level `500`) and a regular author (level `100`).
 
 ##### ORCID (optional)
 
@@ -95,7 +100,9 @@ This requires an ORCID account which provides authentication tokens for public A
 In the developer tools, use any name, website URL, and description.
 Important is the `Redirect URIs` list, which must include `http://localhost` for your local installation.
 
-The client ID, client secret, redirect URI and the OAuth URLs have to be provided by modifying the `.env` file in the base directory. Note that environment variables provided throught the shell have priority over the `.env` file configuration. For more information on how the `.env` file works, see the docker-compose [documentation](https://docs.docker.com/compose/env-file/).
+The client ID, client secret, redirect URI and the OAuth URLs have to be provided by modifying the `.env` file in the base directory.
+Note that environment variables provided through the shell have priority over the `.env` file configuration.
+For more information on how the `.env` file works, see the [`docker-compose` documentation](https://docs.docker.com/compose/env-file/).
 
 ##### Repositories (optional)
 
@@ -124,7 +131,7 @@ You can find instructions for all hosts (including Docker Toolbox) in the [Elast
 
 ### Build images from source and run
 
-This repository already includes a `.gitmodules` file, which lists all required o2r microservices and tools as git submodules. 
+This repository already includes a `.gitmodules` file, which lists all required o2r microservices and tools as git submodules.
 To download all o2r source code at once, navigate to the `reference-implementation` base directory and use
 
 ```bash
@@ -220,8 +227,8 @@ If the `local` configuration is used and the documentation was build, or if you 
 ### Rationale
 
 This repository serves the goal to make the developments of the o2r project reproducible, not only by running the reference implementation (see above) but also by creating an archivable package of the software in a reproducible (i.e. scripted) way.
-As the implementations component are spread over multiple git repositories, we cannot rely on the direct export of a GitHub release to Zenodo.
-This repository captures all software projects to create a release package, which can be uploaded to a data repository manually.
+As the implementation components are spread over multiple git repositories and rely on container images for reproduction, we cannot use the direct export of a GitHub release to Zenodo.
+This repository captures all software projects to create a reproduction package, which can be uploaded to a data repository manually.
 
 ### Known limitations
 
