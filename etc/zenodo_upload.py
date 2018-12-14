@@ -83,6 +83,9 @@ if __name__ == '__main__':
     files = ['README.md',
         'README-WIN.md',
         'Makefile',
+        'erc-spec.pdf',
+        'o2r-architecture.pdf',
+        'o2r-web-api.pdf'
         'o2r-docs.zip',
         'o2r-reference-implementation-files.zip',
         #'o2r-reference-implementation-images.tar.gz',
