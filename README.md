@@ -174,39 +174,40 @@ Wait until the log shows no new messages for a few seconds, then open **http://l
 
 ### Load data
 
-The o2r API supports two way to load scientific workflows: direct upload as a ZIP archive, or import from a publish share.
-
-Ready to use **Direct upload** examples are available in the directory `erc-examples`.
-
-Examples for loading from a public share are available [in this online share](https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA) (see file `README.txt`) and via the "EXAMPLES" menu in the "Create" section of the platform website.
-
-### Use platform
+You have to **log in** to upload workspaces:
 
 1. Click on "LOGIN" in the upper right hand corner
-1. Select one of the available users, e.g. "Author"
-1. In the "Create" section of the platform website, select a workspace from the "EXAMPLES" menu
-1. Fill in required metadata
-1. Finish the upload and open the ERC page: explore the running job and all interaction possiblities
+1. You are taken to a local login server: select one of the available users, e.g. "User"
+1. After selecting the account type you are redirected to the o2r platform landing page
+
+The o2r API supports two way to load scientific workflows: direct upload as a ZIP archive, or loading from a publish share.
+
+- Ready to use **direct upload examples** are available in the directory `erc-examples`.
+- Examples for **loading from a public share** are available [in this online share](https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA) (see file `README.txt`) and via the "EXAMPLES" menu in the "Create" section of the platform website.
+
+After filling in required metadata you can publish the ERC.
+Then open the ERC page and start a new job.
+Check the job results and explore the interaction possibilities
 
 ### Explore back-end
 
 #### Database administration
 
-An [adminMongo](https://adminmongo.markmoffat.com/) instance is included in the reference implementation. Open it at http://localhost:1234. In mongoAdmin please manually create a connection to host db, i.e. mongodb://db:27017 to edit the database (click "Update" first if you edit the existing connection, then "Connect").
+An [adminMongo](https://adminmongo.markmoffat.com/) instance is included in the reference implementation.
+Open it at http://localhost:1234.
+In mongoAdmin manually create a connection to host database:
 
-The docker compose configuration includes an adminMongo instance. Open it at http://localhost:1234, create a new connection with the following settings:
-
-- Connection name: any name
+- Connection name: any name, e.g. `o2r`
 - Connection string: `mongodb://mongodb:27017` (which is the default port and the host `mongodb`, no password)
-- Connection options: `{}` (empty/default)
+- Connection options: leave to `{}` (empty/default)
 
-Click on "Add connection", then on "Connections" at the top right corner, and then "Connect" using the just created connection.
+Wait a few moments for the interface to refresh, then click "Connect" in the line of the just created connection to explore the main database.
 
 #### File storage
 
 The configurations all use a common [Docker volume](https://docs.docker.com/engine/admin/volumes/volumes/) `o2rvol` with the global name `referenceimplementation_o2rvol`.
 
-The volume and network can be inspected for development purposes:
+The volume can be inspected for development purposes:
 
 ```bash
 docker volume ls
@@ -235,8 +236,10 @@ This repository captures all software projects to create a reproduction package,
 - Nested code projects are currently installed from GitHub during the building of Docker images ((see also [#1](#1)).
   - `o2r-muncher`'s Docker image contains `o2r-meta` and `erc-checker`
   - `o2r-loaders`'s Docker image contains `o2r-meta`
-- The used Docker base images and dependencies for the services, such as npm or pip packages, must be available online in the required version to build the images locally. See project files such as `package.json` or `requirements.txt` for a full list of dependencies.
-- The locally built images do not have a proper version tag but instead are `latest`, since they are build as part of the `docker-compose` configuration. Note that you can easily distinguish images by this, too: The hub images will always have a specific version tag.
+- The used Docker base images and dependencies for the services, such as npm or pip packages, must be available online in the required version to build the images locally.
+  See project files such as `package.json` or `requirements.txt` for a full list of dependencies.
+- The locally built images do not have a proper version tag but instead are `latest`, since they are build as part of the `docker-compose` configuration.
+  Note that you can easily distinguish images by this, too: The hub images will always have a specific version tag.
 
 ### Create package
 
@@ -263,13 +266,16 @@ The package uses the locally built images.
 
 ### Reproduce
 
-The reproduction consists of three steps, assuming the local images do not exist on the machine used:
+The reproduction consists of the following steps:
 
-1. Download the saved images from Zenodo
-1. Load the saved images from the tarball
-1. Run the `docker-compose` configuration without building the images (to ensure the loaded ones are used)
+1. Install [Docker CE](https://docs.docker.com/install/) and [`docker-compose`](https://docs.docker.com/compose/install/)
+1. Download all files of the reproduction package from Zenodo: https://10.5281/zenodo.2203844
+1. Unzip the file `o2r-docs.zip` and `o2r-reference-implementation-files.zip` - they contain documentation you might want to explore, and required configuration files and examples respectively.
+1. Unzip the file `o2r-reference-implementation-modules.zip` - it contains the source code of all software and [the directories are needed for `docker-compose`](https://github.com/docker/compose/issues/3391) even though they are not used
+1. Load the saved images from the tarball using `docker load`.
+1. Run the reference implementation with `docker-compose up` using the configuration file `docker-compose-local.yml` and making sure the loaded images are used with the option `--no-build` (i.e. not building the images)
 
-The last two steps can be executed with
+All except the first two steps can be executed with
 
 ```bash
 make reproduce
@@ -277,16 +283,19 @@ make reproduce
 
 Wait until the log shows no new messages for a few seconds, then open **http://localhost** and continue see section ["Load data"](#load-data) for creating ERCs.
 
-You can stop all containers and clean up local images with
+You can stop all containers with `Ctrl+C` and clean up local images and files with
 
 ```bash
 make local_down
-# to also delete local storage use make local_down_volumes
+# to also delete local storage use: make local_down_volumes
 make local_clean
 ```
 
+Please check the [Docker documentation](https://docs.docker.com/) if any problems arise and feel free to contact the [o2r team](https://o2r.info/about/#team).
+
 ## License
 
-This project is licensed under Apache License, Version 2.0, see file LICENSE. Copyright © 2018 - o2r project.
+This project is licensed under Apache License, Version 2.0, see file LICENSE.
+Copyright © 2018 - o2r project.
 
-All included software projects have their own LICENSE files, see `<component name>/LICENSE`.
+All included software projects and data files have their respective and potentially differing licenses, see e.g. `<component name>/LICENSE`.

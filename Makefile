@@ -23,7 +23,7 @@ init:
 	git submodule add https://github.com/o2r-project/containerit
 
 update:
-	git pull --recurse-submodules
+	git pull
 	git submodule update --init --recursive --remote
 	git submodule foreach --recursive git checkout master
 	git submodule foreach --recursive git pull origin master
@@ -149,8 +149,9 @@ versions:
 	zip --help | head -2 | tail -1;
 
 package_clean:
-	rm -f *.zip
+	rm -f *.zip;
 	rm -f *.tar;
+	rm -f *.tar.gz;
 
 package: package_clean \
 	local_clean \
@@ -166,6 +167,8 @@ upload_files_to_zenodo:
 	python etc/zenodo_upload.py
 	
 reproduce:
-	# TODO import images from files
-	# run make local
-	# deploy some examples
+	unzip o2r-docs.zip;
+	o2r-reference-implementation-modules.zip;
+	unzip o2r-reference-implementation-files.zip;
+	docker load --input o2r-reference-implementation-images.tar.gz;
+	docker-compose --file docker-compose-local.yml --project-name reference-implementation up --no-build;
