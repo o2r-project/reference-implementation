@@ -168,7 +168,7 @@ upload_files_to_zenodo:
 	
 reproduce:
 	unzip o2r-docs.zip;
-	o2r-reference-implementation-modules.zip;
+	unzip o2r-reference-implementation-modules.zip;
 	unzip o2r-reference-implementation-files.zip;
 	docker load --input o2r-reference-implementation-images.tar.gz;
 	docker-compose --file docker-compose-local.yml --project-name reference-implementation up --no-build;
