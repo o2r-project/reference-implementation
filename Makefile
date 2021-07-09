@@ -51,7 +51,8 @@ hub_images:
 	docker pull o2rproject/o2r-muncher;
 	docker pull o2rproject/o2r-shipper;
 	docker pull o2rproject/o2r-guestlister;
-	docker pull o2rproject/ui:
+	docker pull o2rproject/containerit;
+	docker pull o2rproject/ui;
 
 hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	   o2rproject/o2r-bouncer;
@@ -61,7 +62,7 @@ hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.vcs-ref"}}'       o2rproject/o2r-shipper;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-guestlister;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'       o2rproject/containerit;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'          o2rproject/ui:0.2.0;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'                o2rproject/ui;
 
 hub_up:
 	docker-compose up;
@@ -141,7 +142,7 @@ package: package_clean \
 upload_files_to_zenodo:
 	python etc/zenodo_upload.py
 	
-reproduce:
+reproduce: local_clean
 	unzip o2r-docs.zip;
 	unzip o2r-reference-implementation-modules.zip;
 	unzip o2r-reference-implementation-files.zip;

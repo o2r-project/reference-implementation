@@ -1,3 +1,5 @@
+#!/bin/env python2
+
 """
 Copyright (c) 2018 o2r project
 

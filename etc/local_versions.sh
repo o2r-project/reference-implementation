@@ -17,9 +17,10 @@ function versioninfo {
     cd ..
 }
 
-for dir in $(ls -1d */ | grep -v 'etc')
+for dir in $(ls -1d */ | grep -v 'etc\|bindings')
 do
   versioninfo ${dir}
 done
+versioninfo o2r-ui/ui/bindings
 
 echo ". (reference-implementation)" $(git rev-parse HEAD)
