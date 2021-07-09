@@ -8,19 +8,13 @@ init:
 	git submodule add https://github.com/o2r-project/erc-checker
 	git submodule add https://github.com/o2r-project/erc-examples
 	git submodule add https://github.com/o2r-project/o2r-bouncer
-	git submodule add https://github.com/o2r-project/o2r-finder
 	git submodule add https://github.com/o2r-project/o2r-informer
-	git submodule add https://github.com/o2r-project/o2r-inspecter
-	git submodule add https://github.com/o2r-project/o2r-loader
 	git submodule add https://github.com/o2r-project/o2r-meta
 	git submodule add https://github.com/o2r-project/o2r-muncher
-	git submodule add https://github.com/o2r-project/o2r-platform
+	git submodule add https://github.com/o2r-project/o2r-UI
 	git submodule add https://github.com/o2r-project/o2r-shipper
-	git submodule add https://github.com/o2r-project/o2r-substituter
-	git submodule add https://github.com/o2r-project/o2r-transporter
 	git submodule add https://github.com/o2r-project/o2r-guestlister
-	git submodule add https://github.com/o2r-project/o2r-bindings
-	git submodule add https://github.com/o2r-project/containerit
+	git submodule add https://github.com/o2r-project/geoextent
 
 update:
 	git pull
@@ -52,34 +46,22 @@ local_versions_save: local_versions
 hub_images:
 	# pull ":latest" images so that we don't need to update versions here as well
 	docker pull o2rproject/o2r-bouncer;
-	docker pull o2rproject/o2r-finder;
 	docker pull o2rproject/o2r-informer;
-	docker pull o2rproject/o2r-inspecter;
-	docker pull o2rproject/o2r-loader;
 	docker pull o2rproject/o2r-meta;
 	docker pull o2rproject/o2r-muncher;
-	docker pull o2rproject/o2r-platform;
 	docker pull o2rproject/o2r-shipper;
-	docker pull o2rproject/o2r-substituter;
-	docker pull o2rproject/o2r-transporter;
 	docker pull o2rproject/o2r-guestlister;
-	docker pull o2rproject/o2r-bindings;
+	docker pull o2rproject/ui:
 
 hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	   o2rproject/o2r-bouncer;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	    o2rproject/o2r-finder;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-informer;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'     o2rproject/o2r-inspecter;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'        o2rproject/o2r-loader;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'          o2rproject/o2r-meta;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'       o2rproject/o2r-muncher;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-platform;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.vcs-ref"}}'       o2rproject/o2r-shipper;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-substituter;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-transporter;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'   o2rproject/o2r-guestlister;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-bindings;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'       o2rproject/containerit;
+	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'          o2rproject/ui:0.2.0;
 
 hub_up:
 	docker-compose up;
@@ -112,21 +94,14 @@ local_save_images:
 	docker save \
 	mongo:3.6 \
 	adicom/admin-mongo:latest \
-	docker.elastic.co/elasticsearch/elasticsearch:5.6.10 \
 	o2r_refimpl_containerit \
 	o2r_refimpl_meta \
 	o2r_refimpl_muncher \
-	o2r_refimpl_loader \
 	o2r_refimpl_informer \
 	o2r_refimpl_bouncer \
-	o2r_refimpl_finder \
-	o2r_refimpl_transporter \
 	o2r_refimpl_shipper \
-	o2r_refimpl_substituter \
-	o2r_refimpl_inspecter \
-	o2r_refimpl_bindings \
 	o2r_refimpl_guestlister \
-	o2r_refimpl_platform \
+	o2r_refimpl_ui \
 	nginx:latest | pigz --stdout --fast > o2r-reference-implementation-images.tar.gz;
 	ls -1sh o2r-reference-implementation-images*.tar.gz;
 

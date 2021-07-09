@@ -40,34 +40,6 @@ services:
     ports:
       - "1234:1234"
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
-    environment:
-      - cluster.name=o2rplatform-es-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "xpack.security.enabled=false"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 1g
-#    ports:
-#      - "9200:9200"
-  elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
-    environment:
-      - cluster.name=o2rplatform-es-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.ping.unicast.hosts=elasticsearch"
-      - "xpack.security.enabled=false"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 1g
-
   muncher:
     image: o2rproject/o2r-muncher:0.21.0
     depends_on:
@@ -83,20 +55,9 @@ services:
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
-
-  loader:
-    image: o2rproject/o2r-loader:0.12.0
-    depends_on:
-      - configmongodb
-    volumes:
-      - o2rvol:/tmp/o2r
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - "LOADER_MONGODB=mongodb://mongodb:27017/"
-      - LOADER_PORT=8088
-      - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      - LOADER_VOLUME=referenceimplementation_o2rvol
-      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
+      - MUNCHER_CONTAINERIT_FILTER_BASE_IMAGE_PKGS=true
+      - "MUNCHER_CONTAINERIT_BASE_IMAGE=rocker/geospatial:4.0.5"
+      - "MUNCHER_CONTAINERIT_IMAGE=o2rproject/containerit:geospatial-0.6.0.9004"
 
   informer:
     image: o2rproject/o2r-informer:0.5.0
@@ -122,34 +83,6 @@ services:
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
       - OAUTH_STARTUP_FAIL_ON_ERROR=false
 
-  finder:
-    image: o2rproject/o2r-finder:0.6.2
-    depends_on:
-      - configmongodb
-      - elasticsearch
-    volumes:
-      - o2rvol:/tmp/o2r
-    environment:
-      - "FINDER_MONGODB=mongodb://mongodb:27017/"
-      - FINDER_PORT=8084
-      - DEBUG=finder,finder:*
-      - ELASTIC_SEARCH_URL=elasticsearch:9200
-      - "MONGO_DATA_URL=mongodb://mongodb/muncher"
-      - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
-      - BATCH_COUNT=5
-
-  transporter:
-    image: o2rproject/o2r-transporter:0.6.0
-    depends_on:
-      - configmongodb
-    volumes:
-      - o2rvol:/tmp/o2r
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    environment:
-      - "TRANSPORTER_MONGODB=mongodb://mongodb:27017/"
-      - TRANSPORTER_PORT=8081
-      - DEBUG=transporter,transporter:*
-
   shipper:
     image: o2rproject/o2r-shipper:8f95fd6
     depends_on:
@@ -163,29 +96,8 @@ services:
       SHIPPER_BASE_PATH: "/tmp/o2r"
       PYTHONUNBUFFERED: "0"
 
-  substituter:
-    image: o2rproject/o2r-substituter:0.5.0
-    depends_on:
-      - configmongodb
-    volumes:
-      - o2rvol:/tmp/o2r
-    environment:
-      - "SUBSTITUTER_MONGODB=mongodb://mongodb:27017/"
-      - SUBSTITUTER_PORT=8090
-      - DEBUG=substituter,substituter:*
-
-  inspecter:
-    image: o2rproject/o2r-inspecter:0.0.1
-    volumes:
-      - o2rvol:/tmp/o2r
-    environment:
-      - INSPECTER_PORT=8091
-      - DEBUGME=inspecter
-
   bindings:
-    image: o2rproject/o2r-bindings:0.0.1
-    ports:
-      - "5000-5499:5000-5499"
+    image: o2rproject/o2r-bindings:0.1.0
     volumes:
       - o2rvol:/tmp/o2r
     environment: 
@@ -205,6 +117,9 @@ services:
 
   platform:
     image: o2rproject/o2r-platform:1.0.2
+
+  ui:
+    image: o2rproject/ui:0.2.0
 
   webserver:
     image: nginx:latest

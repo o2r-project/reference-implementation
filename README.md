@@ -28,6 +28,7 @@ For more information on the architecture and the microservices see [o2r System A
 ### Contents
 
 All of the software, specification and documentation for the o2r system are available nested in this project.
+Deprectated projects are not included as submodules anymore but are listed below for transparency.
 
 | **Component** | **Directory | **Online** |
 | ------ | ------ | ------ |
@@ -36,17 +37,19 @@ All of the software, specification and documentation for the o2r system are avai
 | Architecture specification (document) | `architecture` | https://github.com/o2r-project/architecture |
 | ERC checker (library/tool) | `erc-checker` | https://github.com/o2r-project/erc-checker/ |
 | ERC and workspace examples (misc) | `erc-examples` | https://github.com/o2r-project/erc-examples |
+| ~~bindings (microservice)~~ deprecated, now part of `o2r-UI` | `o2r-bindings` | https://github.com/o2r-project/o2r-bindings |
 | bouncer (microservice) | `o2r-bouncer` | https://github.com/o2r-project/o2r-bouncer |
-| finder (microservice) | `o2r-finder` | https://github.com/o2r-project/o2r-finder |
+| ~~finder (microservice, using Elasticsearch)~~ deprecated, devlopment stopped | `o2r-finder` | https://github.com/o2r-project/o2r-finder |
 | informer (microservice) | `o2r-informer` | https://github.com/o2r-project/o2r-informer |
-| loader (microservice) | `o2r-loader` | https://github.com/o2r-project/o2r-loader |
+| ~~loader (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-loader` | https://github.com/o2r-project/o2r-loader |
 | meta (CLI tool) | `o2r-meta` | https://github.com/o2r-project/o2r-meta|
 | muncher (microservice) | `o2r-muncher` | https://github.com/o2r-project/o2r-muncher |
-| platform (web UI) | `o2r-platform` | https://github.com/o2r-project/o2r-platform|
+| ~~platform (web UI)~~ deprecated, see `o2r-UI` | `o2r-platform` | https://github.com/o2r-project/o2r-platform|
 | shipper (microservice) | `o2r-shipper` | https://github.com/o2r-project/o2r-shipper |
-| substituter (microservice) | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
+| ~~substituter (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
 | guestlister (microservice) | `o2r-guestlister` | https://github.com/o2r-project/o2r-guestlister |
-| transporter (microservice) | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
+| ~~transporter (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
+| UI | `o2r-UI` | https://github.com/o2r-project/o2r-UI |
 
 ### Supported operating systems
 
@@ -119,15 +122,6 @@ Modify the `SHIPPER_REPO_TOKENS` entry in the `.env` file to include the tokens:
 ```
 SHIPPER_REPO_TOKENS={"zenodo": "<your Zenodo token>", "zenodo_sandbox": "<your Zenodo Sandbox token>", "download": "" }
 ```
-
-#### Elasticsearch host preparation
-
-The implementation uses an [Elasticsearch](http://elastic.co) document search engine.
-Elasticsearch requires the ability to create many memory-mapped areas ([mmaps](https://en.wikipedia.org/wiki/Mmap)s) for fast access.
-The usual "max map count" setting is [configured to low on many computers](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/_maximum_map_count_check.html).
-
-You may have to configure `vm.max_map_count` on the host to be at least `262144`, e.g. on Linux via `sysctl`.
-You can find instructions for all hosts (including Docker Toolbox) in the [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/docker.html#docker-cli-run-prod-mode).
 
 ### Build images from source and run
 
