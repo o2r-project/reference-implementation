@@ -1,9 +1,6 @@
 [submodule "o2r-bouncer"]
 	path = o2r-bouncer
 	url = https://github.com/o2r-project/o2r-bouncer
-[submodule "o2r-informer"]
-	path = o2r-informer
-	url = https://github.com/o2r-project/o2r-informer
 [submodule "o2r-muncher"]
 	path = o2r-muncher
 	url = https://github.com/o2r-project/o2r-muncher
