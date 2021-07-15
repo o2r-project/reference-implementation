@@ -12,6 +12,7 @@ import sys
 import logging
 import requests
 import humanfriendly
+from md5hash import scan
 
 # (you must install the required Python modules before the first run: `pip install clint requests_toolbelt`)
 #from clint.textui.progress import Bar
@@ -87,10 +88,8 @@ if __name__ == '__main__':
         'Makefile',
         'erc-spec.pdf',
         'o2r-architecture.pdf',
-        'o2r-web-api.pdf'
-        'o2r-docs.zip',
+        'o2r-openapi.pdf',
         'o2r-reference-implementation-files.zip',
-        #'o2r-reference-implementation-images.tar.gz',
         'o2r-reference-implementation-modules.zip',
         'versions.txt'
         ]
@@ -98,11 +97,11 @@ if __name__ == '__main__':
         upload_file(file, deposit)
 
     print('Uploaded small files to %s/%s: %s' % (ZENODO_URL, deposit, str(files)))
-    raw_input('Go to https://zenodo.org/deposit/%s and upload the file %s. Done?' % (deposit, 'o2r-reference-implementation-images.tar.gz'))
+    input('Go to https://zenodo.org/deposit/%s and upload the files >100MB: \n\n%s\n\n. Done?' % (deposit, ['o2r-reference-implementation-images.tar.gz', 'o2r-docs.zip']))
     print('Deposition files:')
     r = requests.get('%s/%s' % (ZENODO_URL, deposit), params = {'access_token': token})
     for file in r.json()['files']:
-            print('    %s (%s)' % (file['filename'], humanfriendly.format_size(file['filesize'])))
+            print('    %s (%s) | %s (remote) | %s (local)' % (file['filename'], humanfriendly.format_size(file['filesize']), file['checksum'], scan(file['filename'])))
     
     #publish_deposit(deposit)
     #print('Published new deposit at: %s/%s' % (ZENODO_URL, deposit))

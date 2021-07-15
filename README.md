@@ -243,7 +243,7 @@ The package uses the locally built images.
     - cleans up existing artifacts (`make package_clean local_clean`),
     - prints _used_ software versions (git, Docker etc., `make versions`),
     - updates the nested projects (`make update`),
-    - builds all documentation locally (`make build_documentation`),
+    - save current documentation as PDFs (`make get_documentation`),
     - saves local version information of software and repositories to single file `versions.txt` (`make local_versions_save`),
     - builds all images locally (see [limitations](#known-limitations), `make local_build`),
     - saves the just built images into the file `o2r-reference-implementation-images.tar` (`make local_save_images`),
@@ -251,9 +251,10 @@ The package uses the locally built images.
         - reference implementation software to `o2r-reference-implementation-modules.zip`
         - documentation to `o2r-docs.zip`
         - reproduction package files (everything except `README` files and `Makefile`) to `o2r-reference-implementation-files.zip`
+1. Log in to Zenodo and go to the record <https://zenodo.org/record/2203844>
 1. Create a new deposit or a new version of the existing deposit on Zenodo
 1. Upload the _small files_ to the just created Zenodo deposit ([first version](https://zenodo.org/api/deposit/depositions/2203844), the used Python scripts needs the module `humanfriendly`; `ZENODO_DEPOSIT_ID=xxxxxx ZENODO_ACCESS_TOKEN=xxxxxx make upload_files_to_zenodo`)
-1. Manually upload the _big file_ to Zenodo deposit ([Zenodo API currently has a 100 MB file limit](http://developers.zenodo.org/#deposition-files))
+1. Manually upload the _big files_ to Zenodo deposit ([Zenodo API currently has a 100 MB file limit](http://developers.zenodo.org/#deposition-files))
 1. Fill out metadata form on Zenodo and publish using the "Publish" button
 
 ### Reproduce

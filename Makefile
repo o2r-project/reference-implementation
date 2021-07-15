@@ -124,7 +124,7 @@ package_clean:
 package: package_clean \
 	local_clean \
 	versions \
-	update \
+	local_update \
 	get_documentation \
 	local_versions_save \
 	local_build \
