@@ -123,15 +123,10 @@ services:
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
 
-  ui:
+  webserver:
     image: o2r_refimpl_ui
     build:
       context: ./o2r-ui/ui
-    restart: unless-stopped
-
-  webserver:
-    image: nginx:latest
-    restart: unless-stopped
     depends_on:
       - bouncer
       - muncher

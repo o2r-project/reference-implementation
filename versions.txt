@@ -1,23 +1,18 @@
 make[1]: Entering directory '/home/daniel/git/o2r/reference-implementation'
 etc/local_versions.sh
-api/ 8d75e2ff1847073b8bc9025bc901e9a2e2cb9b3f
-architecture/ 00756bca5b3a69ce4267149dead6f57d08a4bfce
-containerit/ 0.5.0.9004 07452318e0768cea858b74dad2f1e5594dcb2926
-erc-checker/ 1.2.0 fb1ed1617464b862404dc18c3641678543bca470
-erc-examples/ d5892550b2d68e858f006e4867de4fae5cc76a11
-erc-spec/ a112fd85b26a4659997ac2463ec0aff7315ebd22
-o2r-bindings/ 0.0.1 f68e17d12dc7573bd7c6b927d444ef35b09f14fc
-o2r-bouncer/ 0.13.0 0c99901a7f0f6e633866d1eaca4f55c95cce6aa3
-o2r-finder/ 0.6.3 97029b6322223e5e4677e03f41d2b1b375634f5c
-o2r-guestlister/ 0.2.2 fe351833fa05455b99b5644d26c944ae6500309f
-o2r-informer/ 0.5.0 cd507af98a12c2544148145c2cffe07853d909f7
-o2r-inspecter/ 0.0.1 ee5e86ada517972b246f8297ddb8b43580e3eac1
-o2r-loader/ 0.12.0 a12115b47ab3a4c931efc4ed8d54a1deeb42606a
-o2r-meta/ f79cc1f838ce8a6151cd10967e497b4c9040e79d
-o2r-muncher/ 0.21.1 c68b4d369a52082ef764b0d576c7964258e0fd63
-o2r-platform/ 1.0.2 806c7952b86b74fae20e631f8a29bf1e1a086e1c
-o2r-shipper/ 8f95fd6cc2c2071658ddcefa3457390207ff5ffc
-o2r-substituter/ 0.5.0 1d5be501c9c2c2a6821ab1caff0c14e4320952dd
-o2r-transporter/ 0.6.0 ed9f8be91d7195c3fe14b565d1b51505f963c17c
-. (reference-implementation) 48efaca2b61c756153dc1fcdfb7fe27d349a8781
+api/ cb69ba193e3aa6256f82d49864566e807670dcb7
+architecture/ 0d60d5e53ced02bd1588ee1c5eca5ddfc9951ccd
+containerit/ 0.6.0.9004 09711d2a3bb0222a59f816fce5d8434f3a540c94
+erc-checker/ 1.3.0 39320fe368220c9791c4faf72b49a3d46e2bb369
+erc-examples/ 21de2c6eab997794dbd284f71519b6568b08a7e8
+erc-spec/ 558fc135076435d53b29dd87d9796076df46204f
+geoextent/ e00303de199e82f4117a7214c1974fa59dff55fd
+o2r-bouncer/ 0.16.2 33dfdedaa420a4471c9378eaa1fdf413e3ee6206
+o2r-guestlister/ 0.3.0 e718b341db373026faff90a8164b40bc283f1d2d
+o2r-meta/ ec5f7c6d432cbb43ab7df2985fc502e60fe7bcff
+o2r-muncher/ 0.32.0 96e846eb8fba1e7db0512c984b10070b13da5fdc
+o2r-shipper/ 92123539d62812d60e72b9c911c8f52cbab74f59
+o2r-ui/ 7bb58498da2eba22a70caad424e4e5f8f081cef9
+o2r-ui/ui/bindings 0.4.0 7bb58498da2eba22a70caad424e4e5f8f081cef9
+. (reference-implementation) 7bb58498da2eba22a70caad424e4e5f8f081cef9
 make[1]: Leaving directory '/home/daniel/git/o2r/reference-implementation'

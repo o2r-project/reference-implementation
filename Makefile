@@ -15,7 +15,7 @@ init:
 	git submodule add https://github.com/o2r-project/o2r-guestlister
 	git submodule add https://github.com/o2r-project/geoextent
 
-update:
+local_update:
 	git pull
 	git submodule update --init --recursive --remote
 	git submodule foreach --recursive git checkout master
@@ -33,7 +33,7 @@ local_down:
 local_down_volume:
 	docker-compose --file docker-compose-local.yml down --volume;
 
-local: update local_build local_up
+local: local_update local_build local_versions local_up
 
 local_versions:
 	etc/local_versions.sh
