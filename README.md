@@ -32,24 +32,25 @@ Deprectated projects are not included as submodules anymore but are listed below
 
 | **Component** | **Directory | **Online** |
 | ------ | ------ | ------ |
-| ERC specification (document) | `erc-spec` | https://github.com/o2r-project/erc-spec/ |
-| Web API specification (document) | `api` | https://github.com/o2r-project/api |
-| Architecture specification (document) | `architecture` | https://github.com/o2r-project/architecture |
-| ERC checker (library/tool) | `erc-checker` | https://github.com/o2r-project/erc-checker/ |
-| ERC and workspace examples (misc) | `erc-examples` | https://github.com/o2r-project/erc-examples |
-| ~~bindings (microservice)~~ deprecated, now part of `o2r-UI` | `o2r-bindings` | https://github.com/o2r-project/o2r-bindings |
-| bouncer (microservice) | `o2r-bouncer` | https://github.com/o2r-project/o2r-bouncer |
-| ~~finder (microservice, using Elasticsearch)~~ deprecated, devlopment stopped | `o2r-finder` | https://github.com/o2r-project/o2r-finder |
-| ~~informer (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-informer` | https://github.com/o2r-project/o2r-informer |
-| ~~loader (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-loader` | https://github.com/o2r-project/o2r-loader |
-| meta (CLI tool) | `o2r-meta` | https://github.com/o2r-project/o2r-meta|
-| muncher (microservice) | `o2r-muncher` | https://github.com/o2r-project/o2r-muncher |
-| ~~platform (web UI)~~ deprecated, see `o2r-UI` | `o2r-platform` | https://github.com/o2r-project/o2r-platform|
-| shipper (microservice) | `o2r-shipper` | https://github.com/o2r-project/o2r-shipper |
-| ~~substituter (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-substituter` | https://github.com/o2r-project/o2r-substituter |
-| guestlister (microservice) | `o2r-guestlister` | https://github.com/o2r-project/o2r-guestlister |
-| ~~transporter (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-transporter` | https://github.com/o2r-project/o2r-transporter |
-| UI | `o2r-UI` | https://github.com/o2r-project/o2r-UI |
+| ERC specification (document) | `erc-spec` | <https://github.com/o2r-project/erc-spec> |
+| Web API specification (document) | `api` | <https://github.com/o2r-project/api> |
+| Architecture specification (document) | `architecture` | <https://github.com/o2r-project/architecture> |
+| ERC checker (library/tool) | `erc-checker` | https<://github.com/o2r-project/erc-checker/> |
+| ERC and workspace examples (misc) | `erc-examples` | <https://github.com/o2r-project/erc-examples> |
+| ~~bindings (microservice)~~ deprecated, now part of `o2r-UI` | `o2r-bindings` | <https://github.com/o2r-project/o2r-bindings> |
+| bouncer (microservice) | `o2r-bouncer` | <https://github.com/o2r-project/o2r-bouncer> |
+| ~~finder (microservice, using Elasticsearch)~~ deprecated, devlopment stopped | `o2r-finder` | <https://github.com/o2r-project/o2r-finder> |
+| ~~informer (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-informer` | <https://github.com/o2r-project/o2r-informer> |
+| ~~loader (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-loader` | <https://github.com/o2r-project/o2r-loader> |
+| meta (CLI tool) | `o2r-meta` | <https://github.com/o2r-project/o2r-meta> |
+| muncher (microservice) | `o2r-muncher` | <https://github.com/o2r-project/o2r-muncher> |
+| ~~platform (web UI)~~ deprecated, see `o2r-UI` | `o2r-platform` | <https://github.com/o2r-project/o2r-platform> |
+| shipper (microservice) | `o2r-shipper` | <https://github.com/o2r-project/o2r-shipper> |
+| ~~substituter (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-substituter` | <https://github.com/o2r-project/o2r-substituter> |
+| guestlister (microservice) | `o2r-guestlister` | <https://github.com/o2r-project/o2r-guestlister> |
+| ~~transporter (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-transporter` | <https://github.com/o2r-project/o2r-transporter> |
+| UI | `o2r-UI` | <https://github.com/o2r-project/o2r-UI> |
+| containerit (CLI tool) | `containerit` | <https://github.com/o2r-project/containerit> |
 
 ### Supported operating systems
 
@@ -119,7 +120,7 @@ These tokens can be provided to the docker-compose configurations by setting the
 
 Modify the `SHIPPER_REPO_TOKENS` entry in the `.env` file to include the tokens:
 
-```
+```json
 SHIPPER_REPO_TOKENS={"zenodo": "<your Zenodo token>", "zenodo_sandbox": "<your Zenodo Sandbox token>", "download": "" }
 ```
 
@@ -144,7 +145,7 @@ Then run the microservices and platform in containers:
 make local_up
 ```
 
-Wait until the log shows no new messages for a few seconds, then open **http://localhost** and continue in section ["Load data"](#load-data).
+Wait until the log shows no new messages for a few seconds, then open **<http://localhost>** and continue in section ["Load data"](#load-data).
 
 The above three steps can also be executed with a single target:
 
@@ -164,7 +165,7 @@ The following target pulls the latest images, prints the versions to the termina
 make hub
 ```
 
-Wait until the log shows no new messages for a few seconds, then open **http://localhost** and continue in section ["Load data"](#load-data).
+Wait until the log shows no new messages for a few seconds, then open **<http://localhost>** and continue in section ["Load data"](#load-data).
 
 ### Load data
 
@@ -188,7 +189,7 @@ Check the job results and explore the interaction possibilities
 #### Database administration
 
 An [adminMongo](https://adminmongo.markmoffat.com/) instance is included in the reference implementation.
-Open it at http://localhost:1234.
+Open it at <http://localhost:1234>.
 In mongoAdmin manually create a connection to host database:
 
 - Connection name: any name, e.g. `o2r`
@@ -239,17 +240,17 @@ The package uses the locally built images.
 
 1. Clone the `reference-implementation` repository to an empty directory: `git clone https://github.com/o2r-project/reference-implementation.git`
 1. Create the package with `make package`, which...
-  - cleans up existing artifacts (`make package_clean local_clean`),
-  - prints _used_ software versions (git, Docker etc., `make versions`),
-  - updates the nested projects (`make update`),
-  - builds all documentation locally (`make build_documentation`),
-  - saves local version information of software and repositories to single file `versions.txt` (`make local_versions_save`),
-  - builds all images locally (see [limitations](#known-limitations), `make local_build`),
-  - saves the just built images into the file `o2r-reference-implementation-images.tar` (`make local_save_images`),
-  - saves all nested repositories (including their histories)
-    - reference implementation software to `o2r-reference-implementation-modules.zip`
-    - documentation to `o2r-docs.zip`
-    - reproduction package files (everything except `README` files and `Makefile`) to `o2r-reference-implementation-files.zip`
+    - cleans up existing artifacts (`make package_clean local_clean`),
+    - prints _used_ software versions (git, Docker etc., `make versions`),
+    - updates the nested projects (`make update`),
+    - builds all documentation locally (`make build_documentation`),
+    - saves local version information of software and repositories to single file `versions.txt` (`make local_versions_save`),
+    - builds all images locally (see [limitations](#known-limitations), `make local_build`),
+    - saves the just built images into the file `o2r-reference-implementation-images.tar` (`make local_save_images`),
+    - saves all nested repositories (including their histories)
+        - reference implementation software to `o2r-reference-implementation-modules.zip`
+        - documentation to `o2r-docs.zip`
+        - reproduction package files (everything except `README` files and `Makefile`) to `o2r-reference-implementation-files.zip`
 1. Create a new deposit or a new version of the existing deposit on Zenodo
 1. Upload the _small files_ to the just created Zenodo deposit ([first version](https://zenodo.org/api/deposit/depositions/2203844), the used Python scripts needs the module `humanfriendly`; `ZENODO_DEPOSIT_ID=xxxxxx ZENODO_ACCESS_TOKEN=xxxxxx make upload_files_to_zenodo`)
 1. Manually upload the _big file_ to Zenodo deposit ([Zenodo API currently has a 100 MB file limit](http://developers.zenodo.org/#deposition-files))
@@ -287,6 +288,6 @@ Please check the [Docker documentation](https://docs.docker.com/) if any problem
 ## License
 
 This project is licensed under Apache License, Version 2.0, see file LICENSE.
-Copyright © 2018 - o2r project.
+Copyright © 2021 - o2r project.
 
 All included software projects and data files have their respective and potentially differing licenses, see e.g. `<component name>/LICENSE`.
