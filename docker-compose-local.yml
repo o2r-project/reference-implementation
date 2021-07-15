@@ -70,18 +70,6 @@ services:
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - "MUNCHER_META_TOOL_CONTAINER=o2r_refimpl_meta"
 
-  informer:
-    image: o2r_refimpl_informer
-    build:
-      context: ./o2r-informer
-    depends_on:
-      - configmongodb
-    environment:
-      - "INFORMER_MONGODB=mongodb://mongodb:27017/"
-      - INFORMER_MONGODB_HOST=mongodb
-      - INFORMER_PORT=8082
-      - DEBUG=informer
-
   bouncer:
     image: o2r_refimpl_bouncer
     build:
@@ -146,12 +134,7 @@ services:
     restart: unless-stopped
     depends_on:
       - bouncer
-      - finder
       - muncher
-      - informer
-      - inspecter
-      - loader
-      - transporter
       - shipper
     ports:
       - "80:80"

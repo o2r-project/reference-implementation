@@ -40,7 +40,7 @@ Deprectated projects are not included as submodules anymore but are listed below
 | ~~bindings (microservice)~~ deprecated, now part of `o2r-UI` | `o2r-bindings` | https://github.com/o2r-project/o2r-bindings |
 | bouncer (microservice) | `o2r-bouncer` | https://github.com/o2r-project/o2r-bouncer |
 | ~~finder (microservice, using Elasticsearch)~~ deprecated, devlopment stopped | `o2r-finder` | https://github.com/o2r-project/o2r-finder |
-| informer (microservice) | `o2r-informer` | https://github.com/o2r-project/o2r-informer |
+| ~~informer (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-informer` | https://github.com/o2r-project/o2r-informer |
 | ~~loader (microservice)~~ deprecated, now part of `o2r-muncher` | `o2r-loader` | https://github.com/o2r-project/o2r-loader |
 | meta (CLI tool) | `o2r-meta` | https://github.com/o2r-project/o2r-meta|
 | muncher (microservice) | `o2r-muncher` | https://github.com/o2r-project/o2r-muncher |

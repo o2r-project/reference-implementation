@@ -8,7 +8,6 @@ init:
 	git submodule add https://github.com/o2r-project/erc-checker
 	git submodule add https://github.com/o2r-project/erc-examples
 	git submodule add https://github.com/o2r-project/o2r-bouncer
-	git submodule add https://github.com/o2r-project/o2r-informer
 	git submodule add https://github.com/o2r-project/o2r-meta
 	git submodule add https://github.com/o2r-project/o2r-muncher
 	git submodule add https://github.com/o2r-project/o2r-UI
@@ -46,7 +45,6 @@ local_versions_save: local_versions
 hub_images:
 	# pull ":latest" images so that we don't need to update versions here as well
 	docker pull o2rproject/o2r-bouncer;
-	docker pull o2rproject/o2r-informer;
 	docker pull o2rproject/o2r-meta;
 	docker pull o2rproject/o2r-muncher;
 	docker pull o2rproject/o2r-shipper;
@@ -56,7 +54,6 @@ hub_images:
 
 hub_versions:
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'	   o2rproject/o2r-bouncer;
-	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'      o2rproject/o2r-informer;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'          o2rproject/o2r-meta;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.version"}}'       o2rproject/o2r-muncher;
 	@docker inspect --format '{{index .Config.Labels "org.label-schema.name"}}: {{index .Config.Labels "org.label-schema.vcs-ref"}}'       o2rproject/o2r-shipper;
@@ -94,7 +91,6 @@ local_save_images:
 	o2r_refimpl_containerit \
 	o2r_refimpl_meta \
 	o2r_refimpl_muncher \
-	o2r_refimpl_informer \
 	o2r_refimpl_bouncer \
 	o2r_refimpl_shipper \
 	o2r_refimpl_guestlister \
