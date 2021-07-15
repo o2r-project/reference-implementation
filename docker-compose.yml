@@ -41,7 +41,7 @@ services:
       - "1234:1234"
 
   muncher:
-    image: o2rproject/o2r-muncher:0.21.0
+    image: o2rproject/o2r-muncher:latest
     depends_on:
       - configmongodb
     volumes:
@@ -54,13 +54,13 @@ services:
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:latest"
       - MUNCHER_CONTAINERIT_FILTER_BASE_IMAGE_PKGS=true
       - "MUNCHER_CONTAINERIT_BASE_IMAGE=rocker/geospatial:4.0.5"
       - "MUNCHER_CONTAINERIT_IMAGE=o2rproject/containerit:geospatial-0.6.0.9004"
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.13.0
+    image: o2rproject/o2r-bouncer:latest
     depends_on:
       - configmongodb
       - guestlister
@@ -74,7 +74,7 @@ services:
       - OAUTH_STARTUP_FAIL_ON_ERROR=false
 
   shipper:
-    image: o2rproject/o2r-shipper:8f95fd6
+    image: o2rproject/o2r-shipper:latest
     depends_on:
       - configmongodb
     volumes:
@@ -87,14 +87,14 @@ services:
       PYTHONUNBUFFERED: "0"
 
   bindings:
-    image: o2rproject/o2r-bindings:0.1.0
+    image: o2rproject/o2r-bindings:latest
     volumes:
       - o2rvol:/tmp/o2r
     environment: 
       - DEBUG=bindings
 
   guestlister:
-    image: o2rproject/o2r-guestlister:0.2.1
+    image: o2rproject/o2r-guestlister:latest
     depends_on:
       - configmongodb
     environment:
@@ -105,27 +105,13 @@ services:
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
 
-  platform:
-    image: o2rproject/o2r-platform:1.0.2
-
-  ui:
-    image: o2rproject/ui:0.2.0
-
   webserver:
-    image: nginx:latest
+    image:  o2rproject/ui:latest
     depends_on:
       - bouncer
-      - finder
-      - muncher
-      - inspecter
-      - loader
-      - transporter
       - shipper
-      - substituter
       - guestlister
       - bindings
-    volumes:
-      - "./etc/nginx.conf:/etc/nginx/nginx.conf:ro"
     ports:
       - "80:80"
 
