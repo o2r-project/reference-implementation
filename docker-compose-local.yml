@@ -153,13 +153,6 @@ services:
       - loader
       - transporter
       - shipper
-      - substituter
-    volumes:
-      - "./etc/nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "./api/site/:/www/docs/api:ro"
-      - "./architecture/site/:/www/docs/architecture:ro"
-      - "./erc-spec/site/:/www/docs/erc-spec:ro"
-      - "./etc/index.html:/www/docs/index.html:ro"
     ports:
       - "80:80"
 

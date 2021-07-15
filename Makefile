@@ -80,16 +80,12 @@ local_clean: local_down_volume
 	docker ps -a | grep o2r | awk '{print $$1}' | xargs sh -c "docker rm --force || true"
 	docker images | grep o2r_refimpl | awk '{print $$3}' | xargs sh -c "docker rmi --force || true"
 
-build_documentation:
+get_documentation:
 	rm -f *.pdf
-	docker build --tag o2r_refimpl_docbuilder --file etc/Dockerfile.documentations .
-	docker run -it -v $(CURDIR)/architecture:/doc:rw o2r_refimpl_docbuilder make build pdf 
-	docker run -it -v $(CURDIR)/api:/doc:rw o2r_refimpl_docbuilder make build pdf 
-	docker run -it -v $(CURDIR)/erc-spec:/doc:rw o2r_refimpl_docbuilder make build travis_pdf
-	mv architecture/site/o2r-architecture.pdf .
-	mv erc-spec/site/erc-spec.pdf .
-	mv api/o2r-web-api.pdf .
-	@echo "ERC, architecture, and web API documentation created, see files PDF files in the project root directory"
+	wget https://o2r.info/architecture/o2r-architecture.pdf
+	wget https://o2r.info/erc-spec/erc-spec.pdf
+	wget https://o2r.info/api/pdf/o2r-openapi.pdf
+	@echo "ERC, architecture, and web API documentation downloaded, see files PDF files in the project root directory"
 
 local_save_images:
 	docker save \
@@ -133,7 +129,7 @@ package: package_clean \
 	local_clean \
 	versions \
 	update \
-	build_documentation \
+	get_documentation \
 	local_versions_save \
 	local_build \
 	local_save_images \
