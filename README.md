@@ -1,5 +1,7 @@
 # o2r reference implementation
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2203843.svg)](https://doi.org/10.5281/zenodo.2203843)
+
 A catch-all repository to run all [o2r](https://o2r.info) microservices and the user interface platform which together form the [o2r prototype for a reproducibility service and publishing system](https://o2r.info/results).
 
 In the remainder of this document, specifications or projects are referenced with their code repository, even if a user-friendly online HTML rending exists, e.g.  https://github.com/o2r-project/erc-spec/ instead of  https://o2r.info/erc-spec/.
